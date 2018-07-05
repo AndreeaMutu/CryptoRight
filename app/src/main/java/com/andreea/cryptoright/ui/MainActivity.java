@@ -1,4 +1,4 @@
-package com.andreea.cryptoright;
+package com.andreea.cryptoright.ui;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -10,6 +10,8 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
+import com.andreea.cryptoright.R;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -17,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private ActionBar toolbar;
+
     @BindView(R.id.navigation)
     BottomNavigationView navigation;
 
