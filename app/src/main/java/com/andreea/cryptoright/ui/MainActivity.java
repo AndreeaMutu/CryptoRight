@@ -1,6 +1,5 @@
 package com.andreea.cryptoright.ui;
 
-import android.arch.lifecycle.ViewModelProviders;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
@@ -10,9 +9,9 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.andreea.cryptoright.R;
+import com.andreea.cryptoright.model.Coin;
 import com.andreea.cryptoright.web.DownloadService;
 import com.firebase.jobdispatcher.FirebaseJobDispatcher;
 import com.firebase.jobdispatcher.GooglePlayDriver;
@@ -21,7 +20,7 @@ import com.firebase.jobdispatcher.Job;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements CoinsFragment.OnListFragmentInteractionListener{
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private ActionBar toolbar;
@@ -31,14 +30,16 @@ public class MainActivity extends AppCompatActivity {
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = item -> {
+        Fragment fragment = null;
                 switch (item.getItemId()) {
                     case R.id.navigation_coins:
+                        toolbar.setTitle(R.string.title_coins);
+                        fragment = CoinsFragment.newInstance(1);
+                        return loadFragment(fragment, false);
+                    case R.id.navigation_news:
 
                         return true;
-                    case R.id.navigation_dashboard:
-
-                        return true;
-                    case R.id.navigation_notifications:
+                    case R.id.navigation_profile:
 
                         return true;
                 }
@@ -87,17 +88,17 @@ public class MainActivity extends AppCompatActivity {
                 .setTag("coin-tag")        // uniquely identifies the job
                 .build();
 
-        dispatcher.mustSchedule(myJob);
+   //     dispatcher.mustSchedule(myJob);
 
-        CoinsViewModel viewModel = ViewModelProviders.of(this).get(CoinsViewModel.class);
-
-        viewModel.getCoins().observe(this, coins -> {
-            if (coins != null && !coins.isEmpty()) {
-                Toast.makeText(MainActivity.this, coins.get(0).getName(), Toast.LENGTH_LONG).show();
-            } else {
-                Toast.makeText(MainActivity.this, "Nothing", Toast.LENGTH_LONG).show();
-            }
-        });
+//        CoinsViewModel viewModel = ViewModelProviders.of(this).get(CoinsViewModel.class);
+//
+//        viewModel.getCoins().observe(this, coins -> {
+//            if (coins != null && !coins.isEmpty()) {
+//                Toast.makeText(MainActivity.this, coins.get(0).getName(), Toast.LENGTH_LONG).show();
+//            } else {
+//                Toast.makeText(MainActivity.this, "Nothing", Toast.LENGTH_LONG).show();
+//            }
+//        });
     }
 
     @Override
@@ -123,5 +124,10 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         }
+    }
+
+    @Override
+    public void onListFragmentInteraction(Coin item) {
+
     }
 }
