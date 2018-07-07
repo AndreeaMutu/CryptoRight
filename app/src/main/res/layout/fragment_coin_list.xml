@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
-
     <data>
-
         <variable
             name="isLoading"
             type="boolean" />
@@ -26,11 +24,9 @@
             android:name="com.andreea.cryptoright.ui.CoinsFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
             app:layoutManager="LinearLayoutManager"
             app:visibleGone="@{!isLoading}"
             tools:context=".ui.CoinsFragment"
-            tools:listitem="@layout/fragment_coin" />
+            tools:listitem="@layout/coin_item" />
     </FrameLayout>
 </layout>

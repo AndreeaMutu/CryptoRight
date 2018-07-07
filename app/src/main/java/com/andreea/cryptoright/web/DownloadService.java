@@ -39,13 +39,13 @@ public class DownloadService extends JobService {
                     CoinListResponse responseBody = response.body();
                     final Map<String, Coin> data = responseBody.getData();
                     Log.d(TAG, "Successfully retrieved coins from web service."+ responseBody);
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            for (Coin coin : data.values()) {
-                                db.coinDao().insert(coin);
-                            }
-
+                    new Thread(() -> {
+                        for (Coin coin : data.values()) {
+                            String imageUrl = coin.getImageUrl();
+                            String url = coin.getUrl();
+                            coin.setImageUrl(responseBody.getBaseImageUrl() + imageUrl);
+                            coin.setUrl(responseBody.getBaseLinkUrl() + url);
+                            db.coinDao().insert(coin);
                         }
                     }).start();
 

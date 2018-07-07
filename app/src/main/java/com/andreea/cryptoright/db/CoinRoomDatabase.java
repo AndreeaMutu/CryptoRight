@@ -10,7 +10,7 @@ import android.support.annotation.NonNull;
 import com.andreea.cryptoright.model.Coin;
 
 
-@Database(entities = {Coin.class}, version = 1)
+@Database(entities = {Coin.class}, version = 1, exportSchema = false)
 public abstract class CoinRoomDatabase extends RoomDatabase {
 
     private static CoinRoomDatabase INSTANCE;

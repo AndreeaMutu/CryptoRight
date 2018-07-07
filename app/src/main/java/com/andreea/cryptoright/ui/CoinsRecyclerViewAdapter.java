@@ -1,59 +1,52 @@
 package com.andreea.cryptoright.ui;
 
+import android.databinding.DataBindingUtil;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.andreea.cryptoright.R;
+import com.andreea.cryptoright.databinding.CoinItemBinding;
 import com.andreea.cryptoright.model.Coin;
-import com.andreea.cryptoright.ui.CoinsFragment.OnListFragmentInteractionListener;
-import com.andreea.cryptoright.ui.dummy.DummyContent.DummyItem;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.RequestCreator;
 
 import java.util.List;
 import java.util.Objects;
 
-/**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
- * specified {@link OnListFragmentInteractionListener}.
- * TODO: Replace the implementation with code for your data type.
- */
-public class CoinsRecyclerViewAdapter extends RecyclerView.Adapter<CoinsRecyclerViewAdapter.ViewHolder> {
+public class CoinsRecyclerViewAdapter extends RecyclerView.Adapter<CoinsRecyclerViewAdapter.CoinViewHolder> {
 
     private List<Coin> mValues;
-    private final OnListFragmentInteractionListener mListener;
+    private final CoinClickCallback mListener;
 
-    public CoinsRecyclerViewAdapter(OnListFragmentInteractionListener listener) {
+    public CoinsRecyclerViewAdapter(CoinClickCallback listener) {
         mListener = listener;
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_coin, parent, false);
-        return new ViewHolder(view);
+    public CoinViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        CoinItemBinding binding = DataBindingUtil
+                .inflate(LayoutInflater.from(parent.getContext()), R.layout.coin_item,
+                        parent, false);
+        binding.setCallback(mListener);
+        return new CoinViewHolder(binding);
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = mValues.get(position);
-        Picasso.get().load("https://cryptocompare.com"+mValues.get(position).getImageUrl()).into(holder.mImageView);
-        holder.mContentView.setText(mValues.get(position).getCoinName());
-
-        holder.mView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mItem);
-                }
-            }
-        });
+    public void onBindViewHolder(final CoinViewHolder holder, int position) {
+        Coin coin = mValues.get(position);
+        holder.binding.setCoin(coin);
+        String imageUrl = coin.getImageUrl();
+        Picasso picasso = Picasso.get();
+        RequestCreator loadRequest;
+        if (TextUtils.isEmpty(imageUrl)) {
+            loadRequest = picasso.load(R.drawable.ic_coin_black_24dp);
+        } else {
+            loadRequest = picasso.load(imageUrl);
+        }
+        loadRequest.placeholder(android.R.drawable.stat_notify_error).into(holder.binding.coinThumbnail);
     }
 
     @Override
@@ -97,22 +90,13 @@ public class CoinsRecyclerViewAdapter extends RecyclerView.Adapter<CoinsRecycler
         }
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        public final View mView;
-        public final ImageView mImageView;
-        public final TextView mContentView;
-        public Coin mItem;
+    public class CoinViewHolder extends RecyclerView.ViewHolder {
 
-        public ViewHolder(View view) {
-            super(view);
-            mView = view;
-            mImageView = (ImageView) view.findViewById(R.id.coin_thumbnail);
-            mContentView = (TextView) view.findViewById(R.id.content);
-        }
+        private CoinItemBinding binding;
 
-        @Override
-        public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
+        public CoinViewHolder(CoinItemBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
         }
     }
 }

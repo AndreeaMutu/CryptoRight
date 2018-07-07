@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.andreea.cryptoright.R;
 import com.andreea.cryptoright.model.Coin;
@@ -20,7 +21,7 @@ import com.firebase.jobdispatcher.Job;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements CoinsFragment.OnListFragmentInteractionListener{
+public class MainActivity extends AppCompatActivity implements CoinClickCallback {
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private ActionBar toolbar;
@@ -67,38 +68,30 @@ public class MainActivity extends AppCompatActivity implements CoinsFragment.OnL
 
         toolbar = getSupportActionBar();
 
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        navigation.setSelectedItemId(R.id.navigation_coins);
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.addOnBackStackChangedListener(() -> {
-            int stackHeight = fragmentManager.getBackStackEntryCount();
-            if (stackHeight > 0) {
-                toolbar.setHomeButtonEnabled(true);
-                toolbar.setDisplayHomeAsUpEnabled(true);
-            } else {
-                toolbar.setDisplayHomeAsUpEnabled(false);
-                toolbar.setHomeButtonEnabled(false);
-            }
-        });
+        if (savedInstanceState == null) {
+            navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+            navigation.setSelectedItemId(R.id.navigation_coins);
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.addOnBackStackChangedListener(() -> {
+                int stackHeight = fragmentManager.getBackStackEntryCount();
+                if (stackHeight > 0) {
+                    toolbar.setHomeButtonEnabled(true);
+                    toolbar.setDisplayHomeAsUpEnabled(true);
+                } else {
+                    toolbar.setDisplayHomeAsUpEnabled(false);
+                    toolbar.setHomeButtonEnabled(false);
+                }
+            });
 
-        FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(this));
-        Job myJob = dispatcher.newJobBuilder()
-                .setService(DownloadService.class) // the JobService that will be called
-                .setTag("coin-tag")        // uniquely identifies the job
-                .build();
+            FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(this));
+            Job myJob = dispatcher.newJobBuilder()
+                    .setService(DownloadService.class) // the JobService that will be called
+                    .setTag("coin-tag")        // uniquely identifies the job
+                    .build();
 
-   //     dispatcher.mustSchedule(myJob);
-
-//        CoinsViewModel viewModel = ViewModelProviders.of(this).get(CoinsViewModel.class);
-//
-//        viewModel.getCoins().observe(this, coins -> {
-//            if (coins != null && !coins.isEmpty()) {
-//                Toast.makeText(MainActivity.this, coins.get(0).getName(), Toast.LENGTH_LONG).show();
-//            } else {
-//                Toast.makeText(MainActivity.this, "Nothing", Toast.LENGTH_LONG).show();
-//            }
-//        });
+            dispatcher.mustSchedule(myJob);
+        }
     }
 
     @Override
@@ -127,7 +120,7 @@ public class MainActivity extends AppCompatActivity implements CoinsFragment.OnL
     }
 
     @Override
-    public void onListFragmentInteraction(Coin item) {
-
+    public void onClick(Coin coin) {
+        Toast.makeText(this, coin.getCoinName(), Toast.LENGTH_LONG).show();
     }
 }

@@ -14,21 +14,18 @@ import android.view.ViewGroup;
 
 import com.andreea.cryptoright.R;
 import com.andreea.cryptoright.databinding.FragmentCoinListBinding;
-import com.andreea.cryptoright.model.Coin;
 
 /**
- * A fragment representing a list of Items.
+ * A fragment representing a list of Coins.
  * <p/>
- * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
+ * Activities containing this fragment MUST implement the {@link CoinClickCallback}
  * interface.
  */
 public class CoinsFragment extends Fragment {
 
-    // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
     private int mColumnCount = 1;
-    private OnListFragmentInteractionListener mListener;
+    private CoinClickCallback mListener;
 
     private FragmentCoinListBinding mBinding;
     private CoinsRecyclerViewAdapter mAdapter;
@@ -40,7 +37,6 @@ public class CoinsFragment extends Fragment {
     public CoinsFragment() {
     }
 
-    // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
     public static CoinsFragment newInstance(int columnCount) {
         CoinsFragment fragment = new CoinsFragment();
@@ -96,11 +92,11 @@ public class CoinsFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnListFragmentInteractionListener) {
-            mListener = (OnListFragmentInteractionListener) context;
+        if (context instanceof CoinClickCallback) {
+            mListener = (CoinClickCallback) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnListFragmentInteractionListener");
+                    + " must implement CoinClickCallback");
         }
     }
 
@@ -108,20 +104,5 @@ public class CoinsFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onListFragmentInteraction(Coin item);
     }
 }
