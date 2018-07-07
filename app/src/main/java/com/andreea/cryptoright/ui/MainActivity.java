@@ -9,7 +9,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.andreea.cryptoright.R;
 import com.andreea.cryptoright.model.Coin;
@@ -31,7 +30,7 @@ public class MainActivity extends AppCompatActivity implements CoinClickCallback
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = item -> {
-        Fragment fragment = null;
+        Fragment fragment;
                 switch (item.getItemId()) {
                     case R.id.navigation_coins:
                         toolbar.setTitle(R.string.title_coins);
@@ -90,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements CoinClickCallback
                     .setTag("coin-tag")        // uniquely identifies the job
                     .build();
 
-            dispatcher.mustSchedule(myJob);
+            //dispatcher.mustSchedule(myJob);
         }
     }
 
@@ -121,6 +120,7 @@ public class MainActivity extends AppCompatActivity implements CoinClickCallback
 
     @Override
     public void onClick(Coin coin) {
-        Toast.makeText(this, coin.getCoinName(), Toast.LENGTH_LONG).show();
+        CoinDetailsFragment detailsFragment = CoinDetailsFragment.newInstance(coin.getId());
+        loadFragment(detailsFragment, true);
     }
 }
