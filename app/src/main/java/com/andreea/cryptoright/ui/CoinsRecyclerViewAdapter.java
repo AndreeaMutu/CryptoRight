@@ -1,5 +1,6 @@
 package com.andreea.cryptoright.ui;
 
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import com.andreea.cryptoright.ui.dummy.DummyContent.DummyItem;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
@@ -22,11 +24,10 @@ import java.util.List;
  */
 public class CoinsRecyclerViewAdapter extends RecyclerView.Adapter<CoinsRecyclerViewAdapter.ViewHolder> {
 
-    private final List<Coin> mValues;
+    private List<Coin> mValues;
     private final OnListFragmentInteractionListener mListener;
 
-    public CoinsRecyclerViewAdapter(List<Coin> items, OnListFragmentInteractionListener listener) {
-        mValues = items;
+    public CoinsRecyclerViewAdapter(OnListFragmentInteractionListener listener) {
         mListener = listener;
     }
 
@@ -57,7 +58,43 @@ public class CoinsRecyclerViewAdapter extends RecyclerView.Adapter<CoinsRecycler
 
     @Override
     public int getItemCount() {
-        return mValues.size();
+        return mValues == null ? 0 : mValues.size();
+    }
+
+    public void setCoinList(List<Coin> coinList) {
+        if (mValues == null) {
+            mValues = coinList;
+            notifyItemRangeInserted(0, coinList.size());
+        } else {
+            DiffUtil.DiffResult result = DiffUtil.calculateDiff(new DiffUtil.Callback() {
+                @Override
+                public int getOldListSize() {
+                    return mValues.size();
+                }
+
+                @Override
+                public int getNewListSize() {
+                    return coinList.size();
+                }
+
+                @Override
+                public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
+                    return mValues.get(oldItemPosition).getId().equals(coinList.get(newItemPosition).getId());
+                }
+
+                @Override
+                public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
+                    Coin newCoin = coinList.get(newItemPosition);
+                    Coin oldCoin = mValues.get(oldItemPosition);
+                    return newCoin.getId().equals(oldCoin.getId())
+                            && Objects.equals(newCoin.getCoinName(), oldCoin.getCoinName())
+                            && Objects.equals(newCoin.getName(), oldCoin.getName())
+                            && newCoin.getSymbol().equals(oldCoin.getSymbol());
+                }
+            });
+            mValues = coinList;
+            result.dispatchUpdatesTo(this);
+        }
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
