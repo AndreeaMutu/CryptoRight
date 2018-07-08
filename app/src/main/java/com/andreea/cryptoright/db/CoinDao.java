@@ -17,4 +17,7 @@ public interface CoinDao {
 
     @Query("SELECT * from Coin ORDER BY sortOrder ASC")
     LiveData<List<Coin>> getAllCoins();
+
+    @Query("SELECT * from Coin WHERE id = :id")
+    LiveData<Coin> getCoinById(String id);
 }

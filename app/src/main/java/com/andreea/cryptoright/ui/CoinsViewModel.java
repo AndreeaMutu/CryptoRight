@@ -23,4 +23,8 @@ public class CoinsViewModel extends AndroidViewModel {
     public LiveData<List<Coin>> getCoins() {
         return coinsLiveData;
     }
+
+    public LiveData<Coin> getCoinById(String id) {
+        return coinDao.getCoinById(id);
+    }
 }

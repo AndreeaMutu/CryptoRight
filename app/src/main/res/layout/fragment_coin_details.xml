@@ -1,14 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.CoinDetailsFragment">
+<layout>
 
-    <TextView
-        android:id="@+id/coinId"
+    <data>
+
+        <variable
+            name="coin"
+            type="com.andreea.cryptoright.model.Coin" />
+
+        <variable
+            name="clickHandler"
+            type="android.view.View.OnClickListener" />
+    </data>
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Test" />
+        tools:context=".ui.CoinDetailsFragment">
 
-</FrameLayout>
+        <TextView
+            android:id="@+id/coinId"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:onClick="@{clickHandler::onClick}"
+            android:text="@{coin.fullName}" />
+
+    </FrameLayout>
+</layout>
