@@ -27,23 +27,25 @@ public class MainActivity extends AppCompatActivity implements CoinClickCallback
 
     @BindView(R.id.navigation)
     BottomNavigationView navigation;
+    private String title;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = item -> {
-        Fragment fragment;
+        Fragment fragment = null;
                 switch (item.getItemId()) {
                     case R.id.navigation_coins:
-                        toolbar.setTitle(R.string.title_coins);
+                        title = getString(R.string.title_coins);
                         fragment = CoinsFragment.newInstance(1);
-                        return loadFragment(fragment, false);
+                        break;
                     case R.id.navigation_news:
-
-                        return true;
+                        title = getString(R.string.title_news);
+                        break;
                     case R.id.navigation_profile:
-
-                        return true;
+                        title = getString(R.string.title_profile);
+                        break;
                 }
-                return false;
+                setToolbarTitle();
+                return loadFragment(fragment, false);
             };
     private boolean loadFragment(Fragment fragment, boolean save) {
         //switching fragment
@@ -98,6 +100,7 @@ public class MainActivity extends AppCompatActivity implements CoinClickCallback
         int id = item.getItemId();
         if (id == android.R.id.home) {
             getSupportFragmentManager().popBackStack();
+            setToolbarTitle();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -109,6 +112,7 @@ public class MainActivity extends AppCompatActivity implements CoinClickCallback
         int stackHeight = fragmentManager.getBackStackEntryCount();
         if (stackHeight > 0) {
             fragmentManager.popBackStack();
+            setToolbarTitle();
         } else {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 finishAfterTransition();
@@ -116,6 +120,12 @@ public class MainActivity extends AppCompatActivity implements CoinClickCallback
                 finish();
             }
         }
+    }
+
+    private void setToolbarTitle() {
+        toolbar.setDisplayHomeAsUpEnabled(false);
+        toolbar.setHomeButtonEnabled(false);
+        toolbar.setTitle(title);
     }
 
     @Override
