@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -12,148 +14,162 @@
             type="android.view.View.OnClickListener" />
     </data>
 
-    <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <ScrollView
+        android:id="@+id/scroll_details"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:id="@+id/details_container"
+        <android.support.design.widget.CoordinatorLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            tools:context=".ui.CoinDetailsFragment">
-
-            <ImageView
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:scaleType="centerCrop"
-                android:layout_gravity="left"
-                android:src="@drawable/ic_coin_black_24dp"
-                android:layout_marginBottom="16dp"/>
+            android:layout_height="match_parent">
 
             <LinearLayout
+                android:id="@+id/details_container"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                tools:context=".ui.CoinDetailsFragment">
 
-                <TextView
-                    android:id="@+id/labelCoinName"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/label_coin_name"
-                    android:textStyle="bold" />
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_gravity="left"
+                    android:layout_marginBottom="16dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_coin_black_24dp" />
 
-                <TextView
-                    android:id="@+id/coinName"
-                    android:layout_width="0dp"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:onClick="@{clickHandler::onClick}"
-                    android:text="@{coin.name}"
-                    tools:text="Bitcoin" />
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/labelCoinName"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                        android:text="@string/label_coin_name"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/coinName"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                        android:onClick="@{clickHandler::onClick}"
+                        android:text="@{coin.coinName}"
+                        tools:text="Bitcoin" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/labelCoinSymbol"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                        android:layout_weight="1"
+                        android:text="@string/label_coin_symbol"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/coinSymbol"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                        android:layout_weight="1"
+                        android:text="@{coin.symbol}"
+                        tools:text="BTC" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/labelCoinAlgorithm"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                        android:layout_weight="1"
+                        android:text="@string/label_coin_algorithm"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/coinAlgorithm"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                        android:layout_weight="1"
+                        android:text="@{coin.algorithm}"
+                        tools:text="Algorithm" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/labelCoinTotalSupply"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                        android:layout_weight="1"
+                        android:text="@string/label_coin_supply"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/coinTotalSupply"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                        android:layout_weight="1"
+                        android:text="@{coin.totalCoinSupply}"
+                        tools:text="2000" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/labelPrice"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                        android:layout_weight="1"
+                        android:text="@string/label_price"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/coinPrice"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                        android:layout_weight="1"
+                        android:text='@{coin.totalCoinSupply+"$"}'
+                        tools:text="6000$" />
+
+                </LinearLayout>
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <android.support.design.widget.FloatingActionButton
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/labelCoinSymbol"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/label_coin_symbol"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/coinSymbol"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@{coin.symbol}"
-                    tools:text="BTC" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/labelCoinAlgorithm"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/label_coin_algorithm"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/coinAlgorithm"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@{coin.algorithm}"
-                    tools:text="Algorithm" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/labelCoinTotalSupply"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/label_coin_supply"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/coinTotalSupply"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@{coin.totalCoinSupply}"
-                    tools:text="2000" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/labelPrice"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/label_price"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/coinPrice"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text='@{coin.totalCoinSupply+"$"}'
-                    tools:text="6000$" />
-
-            </LinearLayout>
-        </LinearLayout>
-
-        <android.support.design.widget.FloatingActionButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right"
-            android:layout_margin="16dp"
-            android:src="@android:drawable/btn_star_big_on"
-            app:layout_anchor="@id/details_container"
-            app:layout_anchorGravity="bottom|right|end" />
-    </android.support.design.widget.CoordinatorLayout>
+                android:layout_gravity="bottom|right"
+                android:layout_margin="16dp"
+                android:src="@android:drawable/btn_star_big_on"
+                app:layout_anchor="@id/details_container"
+                app:layout_anchorGravity="bottom|right|end" />
+        </android.support.design.widget.CoordinatorLayout>
+    </ScrollView>
 </layout>
