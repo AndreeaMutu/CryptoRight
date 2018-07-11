@@ -25,6 +25,14 @@
             android:orientation="vertical"
             tools:context=".ui.CoinDetailsFragment">
 
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:scaleType="centerCrop"
+                android:layout_gravity="left"
+                android:src="@drawable/ic_coin_black_24dp"
+                android:layout_marginBottom="16dp"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -35,7 +43,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Name"
+                    android:text="@string/label_coin_name"
                     android:textStyle="bold" />
 
                 <TextView
@@ -58,7 +66,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Symbol"
+                    android:text="@string/label_coin_symbol"
                     android:textStyle="bold" />
 
                 <TextView
@@ -80,7 +88,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Algorithm"
+                    android:text="@string/label_coin_algorithm"
                     android:textStyle="bold" />
 
                 <TextView
@@ -102,7 +110,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Total Coin Supply"
+                    android:text="@string/label_coin_supply"
                     android:textStyle="bold" />
 
                 <TextView
@@ -125,7 +133,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Price"
+                    android:text="@string/label_price"
                     android:textStyle="bold" />
 
                 <TextView

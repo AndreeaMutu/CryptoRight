@@ -4,4 +4,9 @@
     <string name="title_news">News</string>
     <string name="title_profile">Profile</string>
     <string name="coin_thumbnail_description">Coin logo</string>
+    <string name="label_coin_name">Name</string>
+    <string name="label_coin_symbol">Symbol</string>
+    <string name="label_coin_algorithm">Algorithm</string>
+    <string name="label_coin_supply">Total Coin Supply</string>
+    <string name="label_price">Price</string>
 </resources>
