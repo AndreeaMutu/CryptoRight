@@ -8,12 +8,16 @@ import android.arch.persistence.room.Query;
 
 import com.andreea.cryptoright.model.Coin;
 
+import java.util.Collection;
 import java.util.List;
 
 @Dao
 public interface CoinDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(Coin coin);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertAll(Collection<Coin> coin);
 
     @Query("SELECT * from Coin ORDER BY sortOrder ASC")
     LiveData<List<Coin>> getAllCoins();

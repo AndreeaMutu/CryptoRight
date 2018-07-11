@@ -45,8 +45,8 @@ public class DownloadService extends JobService {
                             String url = coin.getUrl();
                             coin.setImageUrl(responseBody.getBaseImageUrl() + imageUrl);
                             coin.setUrl(responseBody.getBaseLinkUrl() + url);
-                            db.coinDao().insert(coin);
                         }
+                        db.coinDao().insertAll(data.values());
                     }).start();
 
                 }
