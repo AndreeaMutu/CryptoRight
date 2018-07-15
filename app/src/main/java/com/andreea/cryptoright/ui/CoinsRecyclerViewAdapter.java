@@ -1,6 +1,7 @@
 package com.andreea.cryptoright.ui;
 
 import android.databinding.DataBindingUtil;
+import android.support.annotation.NonNull;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -35,7 +36,7 @@ public class CoinsRecyclerViewAdapter extends RecyclerView.Adapter<CoinsRecycler
     }
 
     @Override
-    public void onBindViewHolder(final CoinViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final CoinViewHolder holder, int position) {
         Coin coin = mValues.get(position);
         holder.binding.setCoin(coin);
         String imageUrl = coin.getImageUrl();
