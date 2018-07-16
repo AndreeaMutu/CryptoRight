@@ -13,7 +13,6 @@ import com.andreea.cryptoright.R;
 import com.andreea.cryptoright.db.CoinDao;
 import com.andreea.cryptoright.db.CoinRoomDatabase;
 import com.andreea.cryptoright.model.Coin;
-import com.andreea.cryptoright.model.CoinListResponse;
 import com.andreea.cryptoright.model.CoinPrice;
 import com.andreea.cryptoright.model.CoinPriceResponse;
 import com.andreea.cryptoright.web.CryptoCompareService;
@@ -93,7 +92,7 @@ public class CoinsViewModel extends AndroidViewModel {
                     details.add(new Pair<>(R.string.label_coin_open_day, priceData.getOpenday()));
                     details.add(new Pair<>(R.string.label_coin_high_day, priceData.getHighday()));
                     details.add(new Pair<>(R.string.label_coin_low_day, priceData.getLowday()));
-                    details.add(new Pair<>(R.string.label_coin_daily_change, priceData.getChangepctday()));
+                    details.add(new Pair<>(R.string.label_coin_daily_change, priceData.getChangepctday()+" %"));
                     return details;
                 });
     }

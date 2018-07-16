@@ -301,4 +301,37 @@ public class CoinPrice {
     public void setTotalvolume24Hto(String totalvolume24Hto) {
         this.totalvolume24Hto = totalvolume24Hto;
     }
+
+    @Override
+    public String toString() {
+        return "CoinPrice{" +
+                "fromSymbol='" + fromSymbol + '\'' +
+                ", toSymbol='" + toSymbol + '\'' +
+                ", market='" + market + '\'' +
+                ", price='" + price + '\'' +
+                ", lastupdate='" + lastupdate + '\'' +
+                ", lastvolume='" + lastvolume + '\'' +
+                ", lastvolumeto='" + lastvolumeto + '\'' +
+                ", lasttradeid='" + lasttradeid + '\'' +
+                ", volumeday='" + volumeday + '\'' +
+                ", volumedayto='" + volumedayto + '\'' +
+                ", volume24Hour='" + volume24Hour + '\'' +
+                ", volume24Hourto='" + volume24Hourto + '\'' +
+                ", openday='" + openday + '\'' +
+                ", highday='" + highday + '\'' +
+                ", lowday='" + lowday + '\'' +
+                ", open24Hour='" + open24Hour + '\'' +
+                ", high24Hour='" + high24Hour + '\'' +
+                ", low24Hour='" + low24Hour + '\'' +
+                ", lastmarket='" + lastmarket + '\'' +
+                ", change24Hour='" + change24Hour + '\'' +
+                ", changepct24Hour='" + changepct24Hour + '\'' +
+                ", changeday='" + changeday + '\'' +
+                ", changepctday='" + changepctday + '\'' +
+                ", supply='" + supply + '\'' +
+                ", mktcap='" + mktcap + '\'' +
+                ", totalvolume24H='" + totalvolume24H + '\'' +
+                ", totalvolume24Hto='" + totalvolume24Hto + '\'' +
+                '}';
+    }
 }

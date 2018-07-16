@@ -15,5 +15,5 @@
     <string name="label_coin_open_day">Open Day</string>
     <string name="label_coin_high_day">High Day</string>
     <string name="label_coin_low_day">Low Day</string>
-    <string name="label_coin_daily_change">Daily percent change</string>
+    <string name="label_coin_daily_change">Daily change</string>
 </resources>

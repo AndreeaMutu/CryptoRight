@@ -65,13 +65,14 @@ public class CoinDetailsFragment extends Fragment {
             coinDetails.addAll(details);
             mAdapter.setDetails(coinDetails);
         });
-        viewModel.getCoinPriceDetails(coinId).observe(this, pairs -> {
-            coinDetails.addAll(pairs);
-            mAdapter.setDetails(coinDetails);
-        });
+
         viewModel.getCoinById(coinId).observe(this, coin -> {
             binding.setClickHandler(view -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(coin.getUrl()))));
-            ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(coin.getCoinName());
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(coin.getCoinName());
+            viewModel.getCoinPriceDetails(coin.getSymbol()).observe(this, pairs -> {
+                coinDetails.addAll(pairs);
+                mAdapter.setDetails(coinDetails);
+            });
         });
     }
 

@@ -30,6 +30,13 @@ public class CoinsDetailsRecyclerViewAdapter extends RecyclerView.Adapter<CoinsD
     public void onBindViewHolder(@NonNull final DetailViewHolder holder, int position) {
         Pair<Integer, String> labelValuePair = mValues.get(position);
         Resources resources = holder.binding.getRoot().getResources();
+        if (labelValuePair.first==R.string.label_coin_daily_change){
+            if (labelValuePair.second.startsWith("-")){
+                holder.binding.valueTv.setTextColor(resources.getColor(android.R.color.holo_red_light));
+            } else {
+                holder.binding.valueTv.setTextColor(resources.getColor(android.R.color.holo_green_dark));
+            }
+        }
         holder.binding.setLabel(resources.getString(labelValuePair.first));
         holder.binding.setValue(labelValuePair.second);
     }
