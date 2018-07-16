@@ -18,11 +18,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-            <TextView
-                android:layout_width="wrap_content"
+
+            <Button
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="This is a title"
-                android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+                android:layout_gravity="center"
+                android:backgroundTint="@color/colorPrimary"
+                android:text="Go to cryptocompare.com"
+                android:textColor="@android:color/white"
+                android:onClick="@{clickHandler}"/>
+
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/details_container"
@@ -33,6 +38,7 @@
 
 
         </LinearLayout>
+
         <android.support.design.widget.FloatingActionButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

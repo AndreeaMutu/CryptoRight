@@ -28,10 +28,10 @@ public class DownloadService extends JobService {
                 .build();
 
         CryptoCompareService service = retrofit.create(CryptoCompareService.class);
-        Call<CoinListResponse> coins = service.listCoins();
+        Call<CoinListResponse> coinListResponseCall = service.listCoins();
         Context context = getApplicationContext();
         final CoinRoomDatabase db = CoinRoomDatabase.getDatabase(context);
-        coins.enqueue(new Callback<CoinListResponse>() {
+        coinListResponseCall.enqueue(new Callback<CoinListResponse>() {
             @Override
             public void onResponse(Call<CoinListResponse> call, Response<CoinListResponse> response) {
                 Log.d(TAG, "Response web service."+ response);

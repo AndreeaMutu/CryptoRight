@@ -9,4 +9,11 @@
     <string name="label_coin_algorithm">Algorithm</string>
     <string name="label_coin_supply">Total Coin Supply</string>
     <string name="label_price">Price</string>
+    <string name="label_coin_proof_type">Proof Type</string>
+    <string name="label_coin_price">Price</string>
+    <string name="label_coin_market">Market</string>
+    <string name="label_coin_open_day">Open Day</string>
+    <string name="label_coin_high_day">High Day</string>
+    <string name="label_coin_low_day">Low Day</string>
+    <string name="label_coin_daily_change">Daily percent change</string>
 </resources>

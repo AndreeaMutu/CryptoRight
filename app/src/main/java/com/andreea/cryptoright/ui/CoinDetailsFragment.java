@@ -2,7 +2,9 @@ package com.andreea.cryptoright.ui;
 
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -30,6 +32,7 @@ public class CoinDetailsFragment extends Fragment {
     private String coinId;
     private FragmentCoinDetailsBinding binding;
     private CoinsDetailsRecyclerViewAdapter mAdapter;
+    private List<Pair<Integer, String>> coinDetails = new ArrayList<>();
 
     public CoinDetailsFragment() {
         // Required empty public constructor
@@ -58,22 +61,16 @@ public class CoinDetailsFragment extends Fragment {
         final CoinsViewModel viewModel =
                 ViewModelProviders.of(this).get(CoinsViewModel.class);
 
+        viewModel.getCoinDetails(coinId).observe(this, details -> {
+            coinDetails.addAll(details);
+            mAdapter.setDetails(coinDetails);
+        });
+        viewModel.getCoinPriceDetails(coinId).observe(this, pairs -> {
+            coinDetails.addAll(pairs);
+            mAdapter.setDetails(coinDetails);
+        });
         viewModel.getCoinById(coinId).observe(this, coin -> {
-            List<Pair<String, String>> details = new ArrayList<>();
-            details.add(new Pair<>("Name", coin.getCoinName()));
-            details.add(new Pair<>("Symbol", coin.getSymbol()));
-            details.add(new Pair<>("Algorithm", coin.getAlgorithm()));
-            details.add(new Pair<>("Proof Type", coin.getProofType()));
-            details.add(new Pair<>("Total Coin Supply", coin.getTotalCoinSupply()));
-            details.add(new Pair<>("Price", "6000$"));
-            details.add(new Pair<>("Market", "CryptoCompare Index"));
-            details.add(new Pair<>("Open Day", "6233 $"));
-            details.add(new Pair<>("High Day", "6233 $"));
-            details.add(new Pair<>("Low Day", "6233 $"));
-            details.add(new Pair<>("Daily change Percent", "2.06%"));
-
-            mAdapter.setDetails(details);
-//            binding.setClickHandler(view -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(coin.getUrl()))));
+            binding.setClickHandler(view -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(coin.getUrl()))));
             ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(coin.getCoinName());
         });
     }

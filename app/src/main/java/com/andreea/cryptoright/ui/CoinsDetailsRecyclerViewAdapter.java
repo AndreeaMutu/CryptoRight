@@ -1,5 +1,6 @@
 package com.andreea.cryptoright.ui;
 
+import android.content.res.Resources;
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -14,7 +15,7 @@ import java.util.List;
 
 public class CoinsDetailsRecyclerViewAdapter extends RecyclerView.Adapter<CoinsDetailsRecyclerViewAdapter.DetailViewHolder> {
 
-    private List<Pair<String, String>> mValues;
+    private List<Pair<Integer, String>> mValues;
 
     @NonNull
     @Override
@@ -27,8 +28,9 @@ public class CoinsDetailsRecyclerViewAdapter extends RecyclerView.Adapter<CoinsD
 
     @Override
     public void onBindViewHolder(@NonNull final DetailViewHolder holder, int position) {
-        Pair<String, String> labelValuePair = mValues.get(position);
-        holder.binding.setLabel(labelValuePair.first);
+        Pair<Integer, String> labelValuePair = mValues.get(position);
+        Resources resources = holder.binding.getRoot().getResources();
+        holder.binding.setLabel(resources.getString(labelValuePair.first));
         holder.binding.setValue(labelValuePair.second);
     }
 
@@ -37,11 +39,11 @@ public class CoinsDetailsRecyclerViewAdapter extends RecyclerView.Adapter<CoinsD
         return mValues == null ? 0 : mValues.size();
     }
 
-    public void setDetails(List<Pair<String, String>> details) {
-        if (mValues == null) {
+    public void setDetails(List<Pair<Integer, String>> details) {
+
             mValues = details;
             notifyDataSetChanged();
-        }
+
     }
 
     public class DetailViewHolder extends RecyclerView.ViewHolder {
