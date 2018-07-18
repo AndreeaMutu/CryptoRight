@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
 import android.view.MenuItem;
 
 import com.andreea.cryptoright.R;
@@ -103,7 +104,22 @@ public class MainActivity extends AppCompatActivity implements CoinClickCallback
             setToolbarTitle();
             return true;
         }
+        if (id == R.id.settings){
+            getFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, new SettingsFragment())
+            .addToBackStack(null)
+            .commit();
+
+            return true;
+        }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
     }
 
     @Override
