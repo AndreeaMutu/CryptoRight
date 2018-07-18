@@ -104,14 +104,11 @@ public class MainActivity extends AppCompatActivity implements CoinClickCallback
             setToolbarTitle();
             return true;
         }
-        if (id == R.id.settings){
-            getFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragment_container, new SettingsFragment())
-            .addToBackStack(null)
-            .commit();
-
+        if (id == R.id.ccy_eur || id ==R.id.ccy_usd){
+            if (item.isChecked()) item.setChecked(false);
+            else item.setChecked(true);
             return true;
+
         }
         return super.onOptionsItemSelected(item);
     }
