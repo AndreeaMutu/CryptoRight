@@ -16,7 +16,7 @@
     <string name="label_coin_high_day">High Day</string>
     <string name="label_coin_low_day">Low Day</string>
     <string name="label_coin_daily_change">Daily change</string>
-    <string name="appwidget_text">EXAMPLE</string>
+    <string name="appwidget_text">BTC</string>
     <string name="configure">Configure</string>
     <string name="add_widget">Add widget</string>
     <string name="menu_settings">Settings</string>

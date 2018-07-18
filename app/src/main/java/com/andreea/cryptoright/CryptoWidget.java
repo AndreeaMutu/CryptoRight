@@ -2,7 +2,6 @@ package com.andreea.cryptoright;
 
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
-import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
 import android.util.Log;
 import android.widget.RemoteViews;
@@ -44,6 +43,7 @@ public class CryptoWidget extends AppWidgetProvider {
                 if (response.isSuccessful()){
                     CoinPriceResponse body = response.body();
                     Map<String, Map<String, CoinPrice>> priceData = body.getPriceData();
+                    Log.d(TAG, "onResponse price data: " + priceData);
                     CoinPrice coinPrice = priceData.get(coinSymbol).get("USD");
 
                     // Construct the RemoteViews object
