@@ -9,6 +9,7 @@
             <group android:checkableBehavior="single">
                 <item
                     android:id="@+id/ccy_eur"
+                    android:checked="true"
                     android:title="@string/ccy_eur" />
                 <item
                     android:id="@+id/ccy_usd"

@@ -1,5 +1,6 @@
 package com.andreea.cryptoright.ui;
 
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
@@ -8,6 +9,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -24,6 +26,7 @@ import butterknife.ButterKnife;
 public class MainActivity extends AppCompatActivity implements CoinClickCallback {
 
     private static final String TAG = MainActivity.class.getSimpleName();
+    private static final String PREF_REF_CCY_KEY = "ref_ccy";
     private ActionBar toolbar;
 
     @BindView(R.id.navigation)
@@ -97,6 +100,15 @@ public class MainActivity extends AppCompatActivity implements CoinClickCallback
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        int selectedCcyId = sharedPreferences.getInt(PREF_REF_CCY_KEY, R.id.ccy_eur);
+        menu.findItem(selectedCcyId).setChecked(true);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home) {
@@ -104,11 +116,13 @@ public class MainActivity extends AppCompatActivity implements CoinClickCallback
             setToolbarTitle();
             return true;
         }
-        if (id == R.id.ccy_eur || id ==R.id.ccy_usd){
-            if (item.isChecked()) item.setChecked(false);
-            else item.setChecked(true);
+        if (id == R.id.ccy_eur || id == R.id.ccy_usd){
+            item.setChecked(true);
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+            sharedPreferences.edit()
+                    .putInt(PREF_REF_CCY_KEY, id)
+            .apply();
             return true;
-
         }
         return super.onOptionsItemSelected(item);
     }
