@@ -26,7 +26,8 @@ import butterknife.ButterKnife;
 public class MainActivity extends AppCompatActivity implements CoinClickCallback {
 
     private static final String TAG = MainActivity.class.getSimpleName();
-    private static final String PREF_REF_CCY_KEY = "ref_ccy";
+    public static final String PREF_REF_CCY_ID = "ref_ccy";
+    public static final String PREF_REF_CCY_SYMBOL = "ref_ccy_sym";
     private ActionBar toolbar;
 
     @BindView(R.id.navigation)
@@ -103,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements CoinClickCallback
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        int selectedCcyId = sharedPreferences.getInt(PREF_REF_CCY_KEY, R.id.ccy_eur);
+        int selectedCcyId = sharedPreferences.getInt(PREF_REF_CCY_ID, R.id.ccy_eur);
         menu.findItem(selectedCcyId).setChecked(true);
         return true;
     }
@@ -120,7 +121,8 @@ public class MainActivity extends AppCompatActivity implements CoinClickCallback
             item.setChecked(true);
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
             sharedPreferences.edit()
-                    .putInt(PREF_REF_CCY_KEY, id)
+                    .putInt(PREF_REF_CCY_ID, id)
+                    .putString(PREF_REF_CCY_SYMBOL, String.valueOf(item.getTitle()))
             .apply();
             return true;
         }

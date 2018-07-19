@@ -57,7 +57,7 @@ public class CoinsViewModel extends AndroidViewModel {
         });
     }
 
-    public LiveData<List<Pair<Integer, String>>> getCoinPriceDetails(String coinSymbol) {
+    public LiveData<List<Pair<Integer, String>>> getCoinPriceDetails(String coinSymbol, String referenceCcy) {
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://min-api.cryptocompare.com")
@@ -65,7 +65,7 @@ public class CoinsViewModel extends AndroidViewModel {
                 .build();
 
         CryptoCompareService service = retrofit.create(CryptoCompareService.class);
-        Call<CoinPriceResponse> coinPriceResponseCall = service.getCoinPrices(coinSymbol, "USD");
+        Call<CoinPriceResponse> coinPriceResponseCall = service.getCoinPrices(coinSymbol, referenceCcy);
         MutableLiveData<CoinPrice> priceDetails = new MutableLiveData<>();
         coinPriceResponseCall.enqueue(new Callback<CoinPriceResponse>() {
             @Override
@@ -73,7 +73,7 @@ public class CoinsViewModel extends AndroidViewModel {
                 if (response.isSuccessful()){
                     CoinPriceResponse body = response.body();
                     Map<String, Map<String, CoinPrice>> priceData = body.getPriceData();
-                    CoinPrice coinPrice = priceData.get(coinSymbol).get("USD");
+                    CoinPrice coinPrice = priceData.get(coinSymbol).get(referenceCcy);
                     priceDetails.postValue(coinPrice);
                 }
             }

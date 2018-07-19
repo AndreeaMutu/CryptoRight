@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.preference.PreferenceManager;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -66,10 +67,13 @@ public class CoinDetailsFragment extends Fragment {
             mAdapter.setDetails(coinDetails);
         });
 
+        String refCcy = PreferenceManager.getDefaultSharedPreferences(getActivity())
+                .getString(MainActivity.PREF_REF_CCY_SYMBOL, getString(R.string.ccy_eur));
+
         viewModel.getCoinById(coinId).observe(this, coin -> {
             binding.setClickHandler(view -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(coin.getUrl()))));
             ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(coin.getCoinName());
-            viewModel.getCoinPriceDetails(coin.getSymbol()).observe(this, pairs -> {
+            viewModel.getCoinPriceDetails(coin.getSymbol(), refCcy).observe(this, pairs -> {
                 coinDetails.addAll(pairs);
                 mAdapter.setDetails(coinDetails);
             });
