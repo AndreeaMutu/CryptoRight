@@ -1,9 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <group android:checkableBehavior="single">
-        <item android:id="@+id/ccy_eur"
-            android:title="@string/ccy_eur" />
-        <item android:id="@+id/ccy_usd"
-            android:title="@string/ccy_usd" />
-    </group>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/sort_by"
+        android:title="@string/menu_ref_ccy"
+        app:showAsAction="never">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/ccy_eur"
+                    android:title="@string/ccy_eur" />
+                <item
+                    android:id="@+id/ccy_usd"
+                    android:title="@string/ccy_usd" />
+            </group>
+        </menu>
+    </item>
 </menu>
