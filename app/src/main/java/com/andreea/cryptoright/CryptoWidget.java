@@ -34,7 +34,7 @@ public class CryptoWidget extends AppWidgetProvider {
                 .baseUrl("https://min-api.cryptocompare.com")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-
+        Log.d(TAG, "updateAppWidget: ");
         CryptoCompareService service = retrofit.create(CryptoCompareService.class);
         Call<CoinPriceResponse> coinPriceResponseCall = service.getCoinPrices(coinSymbol, "USD");
         coinPriceResponseCall.enqueue(new Callback<CoinPriceResponse>() {
@@ -51,7 +51,6 @@ public class CryptoWidget extends AppWidgetProvider {
                     views.setTextViewText(R.id.coin_symbol_tv, coinSymbol);
                     views.setTextViewText(R.id.price_tv, coinPrice.getPrice());
                     views.setTextViewText(R.id.change_percent_tv, coinPrice.getChange24Hour());
-                    views.setTextViewText(R.id.market_tv, coinPrice.getMarket());
 
                     // Instruct the widget manager to update the widget
                     appWidgetManager.updateAppWidget(appWidgetId, views);

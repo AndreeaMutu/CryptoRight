@@ -35,20 +35,6 @@
         tools:text="$ 6500" />
 
     <TextView
-        android:id="@+id/market_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:layout_margin="8dp"
-        android:background="#09C"
-        android:contentDescription="@string/appwidget_text"
-        android:textColor="#ffffff"
-        android:textSize="24sp"
-        android:textStyle="bold|italic"
-        tools:text="Market" />
-
-    <TextView
         android:id="@+id/change_percent_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
