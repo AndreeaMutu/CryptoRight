@@ -11,7 +11,6 @@ import com.andreea.cryptoright.R;
 import com.andreea.cryptoright.databinding.ArticleItemBinding;
 import com.andreea.cryptoright.model.NewsArticle;
 import com.andreea.cryptoright.ui.ArticleFragment.OnListFragmentInteractionListener;
-import com.andreea.cryptoright.ui.dummy.DummyContent.DummyItem;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestCreator;
 
@@ -19,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
+ * {@link RecyclerView.Adapter} that can display a  and makes a call to the
  * specified {@link OnListFragmentInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
  */
