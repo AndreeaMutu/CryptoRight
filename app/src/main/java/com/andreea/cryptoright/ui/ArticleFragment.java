@@ -1,18 +1,20 @@
 package com.andreea.cryptoright.ui;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.andreea.cryptoright.R;
-import com.andreea.cryptoright.ui.dummy.DummyContent;
-import com.andreea.cryptoright.ui.dummy.DummyContent.DummyItem;
+import com.andreea.cryptoright.databinding.FragmentArticleListBinding;
+import com.andreea.cryptoright.model.NewsArticle;
 
 /**
  * A fragment representing a list of Items.
@@ -27,6 +29,8 @@ public class ArticleFragment extends Fragment {
     // TODO: Customize parameters
     private int mColumnCount = 2;
     private OnListFragmentInteractionListener mListener;
+    private FragmentArticleListBinding mBinding;
+    private ArticleRecyclerViewAdapter mAdapter;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -55,24 +59,37 @@ public class ArticleFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_article_list, container, false);
-
-        // Set the adapter
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        final NewsViewModel viewModel =
+                ViewModelProviders.of(this).get(NewsViewModel.class);
+        mBinding.setIsLoading(true);
+        viewModel.getArticles().observe(this, articles -> {
+            if (articles != null) {
+                mBinding.setIsLoading(false);
+                mAdapter.setArticles(articles);
             } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
+                mBinding.setIsLoading(true);
             }
-            recyclerView.setAdapter(new ArticleRecyclerViewAdapter(DummyContent.ITEMS, mListener));
-        }
-        return view;
+        });
     }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_article_list, container, false);
+        View root = mBinding.getRoot();
+        Context context = root.getContext();
+        if (mColumnCount <= 1) {
+            mBinding.articleList.setLayoutManager(new LinearLayoutManager(context));
+        } else {
+            mBinding.articleList.setLayoutManager(new GridLayoutManager(context, mColumnCount));
+        }
+
+        mAdapter = new ArticleRecyclerViewAdapter(mListener);
+        mBinding.articleList.setAdapter(mAdapter);
+        return root;
+    }
 
     @Override
     public void onAttach(Context context) {
@@ -103,6 +120,6 @@ public class ArticleFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
+        void onListFragmentInteraction(NewsArticle item);
     }
 }
