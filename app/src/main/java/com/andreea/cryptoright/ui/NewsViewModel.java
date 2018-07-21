@@ -42,9 +42,11 @@ public class NewsViewModel extends AndroidViewModel {
             public void onResponse(@NonNull Call<NewsResponse> call, @NonNull Response<NewsResponse> response) {
                 if (response.isSuccessful()) {
                     NewsResponse body = response.body();
+                    Log.d(TAG, "onResponse news resp: "+body);
                     List<NewsArticle> articles = null;
                     if (body != null) {
                         articles = body.getData();
+                        Log.d(TAG, "onResponse news: "+ articles);
                         newsLiveData.postValue(articles);
                     }
                 }

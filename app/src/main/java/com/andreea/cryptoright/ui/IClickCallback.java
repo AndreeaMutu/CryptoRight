@@ -1,7 +1,5 @@
 package com.andreea.cryptoright.ui;
 
-import com.andreea.cryptoright.model.Coin;
-
 /**
  * This interface must be implemented by activities that contain this
  * fragment to allow an interaction in this fragment to be communicated
@@ -12,6 +10,6 @@ import com.andreea.cryptoright.model.Coin;
  * "http://developer.android.com/training/basics/fragments/communicating.html"
  * >Communicating with Other Fragments</a> for more information.
  */
-public interface CoinClickCallback {
-    void onClick(Coin coin);
+public interface IClickCallback<T> {
+    void onClick(T object);
 }

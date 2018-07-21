@@ -41,4 +41,12 @@ public class NewsResponse {
         this.data = data;
     }
 
+    @Override
+    public String toString() {
+        return "NewsResponse{" +
+                "type=" + type +
+                ", message='" + message + '\'' +
+                ", data=" + data +
+                '}';
+    }
 }

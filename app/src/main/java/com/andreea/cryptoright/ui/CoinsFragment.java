@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 
 import com.andreea.cryptoright.R;
 import com.andreea.cryptoright.databinding.FragmentCoinListBinding;
+import com.andreea.cryptoright.model.Coin;
 
 /**
  * A fragment representing a list of Coins.
@@ -25,7 +26,7 @@ public class CoinsFragment extends Fragment {
 
     private static final String ARG_COLUMN_COUNT = "column-count";
     private int mColumnCount = 1;
-    private CoinClickCallback mListener;
+    private IClickCallback<Coin> mListener;
 
     private FragmentCoinListBinding mBinding;
     private CoinsRecyclerViewAdapter mAdapter;
@@ -92,11 +93,11 @@ public class CoinsFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof CoinClickCallback) {
-            mListener = (CoinClickCallback) context;
+        if (context instanceof IClickCallback) {
+            mListener = (IClickCallback) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement CoinClickCallback");
+                    + " must implement IClickCallback");
         }
     }
 

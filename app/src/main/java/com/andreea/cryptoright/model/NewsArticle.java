@@ -172,4 +172,24 @@ public class NewsArticle {
     public void setSourceInfo(SourceInfo sourceInfo) {
         this.sourceInfo = sourceInfo;
     }
+
+    @Override
+    public String toString() {
+        return "NewsArticle{" +
+                "id='" + id + '\'' +
+                ", guid='" + guid + '\'' +
+                ", publishedOn=" + publishedOn +
+                ", imageurl='" + imageurl + '\'' +
+                ", title='" + title + '\'' +
+                ", url='" + url + '\'' +
+                ", source='" + source + '\'' +
+                ", body='" + body + '\'' +
+                ", tags='" + tags + '\'' +
+                ", categories='" + categories + '\'' +
+                ", upvotes='" + upvotes + '\'' +
+                ", downvotes='" + downvotes + '\'' +
+                ", lang='" + lang + '\'' +
+                ", sourceInfo=" + sourceInfo +
+                '}';
+    }
 }

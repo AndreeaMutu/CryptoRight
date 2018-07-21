@@ -23,10 +23,9 @@ import com.firebase.jobdispatcher.Job;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements CoinClickCallback {
+public class MainActivity extends AppCompatActivity implements IClickCallback<Coin> {
 
     private static final String TAG = MainActivity.class.getSimpleName();
-    public static final String PREF_REF_CCY_ID = "ref_ccy";
     public static final String PREF_REF_CCY_SYMBOL = "ref_ccy_sym";
     private ActionBar toolbar;
 
@@ -97,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements CoinClickCallback
                     .setTag("coin-tag")        // uniquely identifies the job
                     .build();
 
-            //dispatcher.mustSchedule(myJob);
+           // dispatcher.mustSchedule(myJob);
         }
     }
 
@@ -105,8 +104,13 @@ public class MainActivity extends AppCompatActivity implements CoinClickCallback
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        int selectedCcyId = sharedPreferences.getInt(PREF_REF_CCY_ID, R.id.ccy_eur);
-        menu.findItem(selectedCcyId).setChecked(true);
+        String eur = getString(R.string.ccy_eur);
+        String savedCcy = sharedPreferences.getString(PREF_REF_CCY_SYMBOL, eur);
+        if (savedCcy.equals(eur)){
+            menu.findItem(R.id.ccy_eur).setChecked(true);
+        } else {
+            menu.findItem(R.id.ccy_usd).setChecked(true);
+        }
         return true;
     }
 
@@ -122,7 +126,6 @@ public class MainActivity extends AppCompatActivity implements CoinClickCallback
             item.setChecked(true);
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
             sharedPreferences.edit()
-                    .putInt(PREF_REF_CCY_ID, id)
                     .putString(PREF_REF_CCY_SYMBOL, String.valueOf(item.getTitle()))
             .apply();
             return true;

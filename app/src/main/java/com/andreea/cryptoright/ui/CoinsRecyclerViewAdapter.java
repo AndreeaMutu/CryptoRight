@@ -20,9 +20,9 @@ import java.util.Objects;
 public class CoinsRecyclerViewAdapter extends RecyclerView.Adapter<CoinsRecyclerViewAdapter.CoinViewHolder> {
 
     private List<Coin> mValues;
-    private final CoinClickCallback mListener;
+    private final IClickCallback<Coin> mListener;
 
-    public CoinsRecyclerViewAdapter(CoinClickCallback listener) {
+    public CoinsRecyclerViewAdapter(IClickCallback<Coin> listener) {
         mListener = listener;
     }
 

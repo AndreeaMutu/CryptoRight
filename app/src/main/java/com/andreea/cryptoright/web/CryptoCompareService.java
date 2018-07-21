@@ -16,6 +16,6 @@ public interface CryptoCompareService {
     @GET("/data/pricemultifull")
     Call<CoinPriceResponse> getCoinPrices(@Query("fsyms") String fromSymbols, @Query("tsyms") String toSymbols);
 
-    @GET("/data/v2/news")
+    @GET("/data/v2/news/")
     Call<NewsResponse> getNews(@Query("lang") String language);
 }
