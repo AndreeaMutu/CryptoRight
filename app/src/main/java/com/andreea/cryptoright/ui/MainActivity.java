@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements IClickCallback<Co
                         break;
                     case R.id.navigation_profile:
                         title = getString(R.string.title_profile);
+                        fragment = ProfileFragment.newInstance();
                         break;
                 }
                 setToolbarTitle();
@@ -96,7 +97,9 @@ public class MainActivity extends AppCompatActivity implements IClickCallback<Co
                     .setTag("coin-tag")        // uniquely identifies the job
                     .build();
 
-           // dispatcher.mustSchedule(myJob);
+            dispatcher.mustSchedule(myJob);
+
+
         }
     }
 
