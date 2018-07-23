@@ -9,15 +9,19 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.andreea.cryptoright.R;
 import com.andreea.cryptoright.databinding.FragmentCoinDetailsBinding;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,6 +81,18 @@ public class CoinDetailsFragment extends Fragment {
                 coinDetails.addAll(pairs);
                 mAdapter.setDetails(coinDetails);
             });
+        });
+
+        binding.addToWatchlistFab.setOnClickListener(v -> {
+            GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getActivity());
+            if (acct != null) {
+                String personId = acct.getId();
+                // add to watchlist
+            } else {
+                Snackbar.make(binding.detailsCoordLayout, R.string.message_sign_in,
+                        Snackbar.LENGTH_SHORT)
+                        .show();
+            }
         });
     }
 

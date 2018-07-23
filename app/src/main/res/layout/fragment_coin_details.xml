@@ -11,6 +11,7 @@
     </data>
 
     <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/details_coord_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -40,6 +41,7 @@
         </LinearLayout>
 
         <android.support.design.widget.FloatingActionButton
+            android:id="@+id/add_to_watchlist_fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"

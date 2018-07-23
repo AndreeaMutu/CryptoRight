@@ -5,7 +5,7 @@ android {
         config {
             keyAlias 'key'
             keyPassword 'capstone'
-            storeFile file('/cryptoright.jks')
+            storeFile file('cryptoright.jks')
             storePassword 'capstone'
         }
     }
