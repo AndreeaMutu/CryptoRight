@@ -116,4 +116,9 @@ public class CoinsViewModel extends AndroidViewModel {
        updated.addCoin(coinId);
        new Thread(() -> watchlistDao.insert(updated)).start();
     }
+
+    public LiveData<List<Coin>> getWatchlistCoins(String userId) {
+        return Transformations.switchMap(watchlistDao.getUserWatchlist(userId),
+                input -> coinDao.getCoinsByIds(input.getUserCoinIds()));
+    }
 }

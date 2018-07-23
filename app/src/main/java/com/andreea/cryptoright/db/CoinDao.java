@@ -24,4 +24,7 @@ public interface CoinDao {
 
     @Query("SELECT * from Coin WHERE id = :id")
     LiveData<Coin> getCoinById(String id);
+
+    @Query("SELECT * from Coin WHERE id IN (:ids)")
+    LiveData<List<Coin>> getCoinsByIds(List<String> ids);
 }
