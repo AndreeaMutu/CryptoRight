@@ -8,9 +8,10 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.andreea.cryptoright.model.Coin;
+import com.andreea.cryptoright.model.Watchlist;
 
 
-@Database(entities = {Coin.class}, version = 1, exportSchema = false)
+@Database(entities = {Coin.class, Watchlist.class}, version = 1, exportSchema = false)
 public abstract class CoinRoomDatabase extends RoomDatabase {
 
     private static CoinRoomDatabase INSTANCE;
@@ -32,11 +33,13 @@ public abstract class CoinRoomDatabase extends RoomDatabase {
 
     public abstract CoinDao coinDao();
 
+    public abstract WatchlistDao watchlistDao();
+
     private static Callback sRoomDatabaseCallback =
-            new Callback(){
+            new Callback() {
 
                 @Override
-                public void onOpen (@NonNull SupportSQLiteDatabase db){
+                public void onOpen(@NonNull SupportSQLiteDatabase db) {
                     super.onOpen(db);
                 }
             };

@@ -12,9 +12,11 @@ import android.util.Pair;
 import com.andreea.cryptoright.R;
 import com.andreea.cryptoright.db.CoinDao;
 import com.andreea.cryptoright.db.CoinRoomDatabase;
+import com.andreea.cryptoright.db.WatchlistDao;
 import com.andreea.cryptoright.model.Coin;
 import com.andreea.cryptoright.model.CoinPrice;
 import com.andreea.cryptoright.model.CoinPriceResponse;
+import com.andreea.cryptoright.model.Watchlist;
 import com.andreea.cryptoright.web.CryptoCompareService;
 
 import java.util.ArrayList;
@@ -30,10 +32,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class CoinsViewModel extends AndroidViewModel {
     private static final String TAG = CoinsViewModel.class.getSimpleName();
     private CoinDao coinDao;
+    private WatchlistDao watchlistDao;
     private LiveData<List<Coin>> coinsLiveData;
     public CoinsViewModel(@NonNull Application application) {
         super(application);
         coinDao = CoinRoomDatabase.getDatabase(application).coinDao();
+        watchlistDao = CoinRoomDatabase.getDatabase(application).watchlistDao();
         coinsLiveData = coinDao.getAllCoins();
     }
 
@@ -95,5 +99,21 @@ public class CoinsViewModel extends AndroidViewModel {
                     details.add(new Pair<>(R.string.label_coin_daily_change, priceData.getChangepctday()+" %"));
                     return details;
                 });
+    }
+
+    public LiveData<Watchlist> getUserWatchlist(String userId){
+       return watchlistDao.getUserWatchlist(userId);
+    }
+
+    public void addCoinToWatchlist(String userId, String coinId, Watchlist existing) {
+       Watchlist updated;
+       if (existing == null) {
+           updated = new Watchlist();
+       } else {
+           updated = existing;
+       }
+       updated.setUserId(userId);
+       updated.addCoin(coinId);
+       new Thread(() -> watchlistDao.insert(updated)).start();
     }
 }

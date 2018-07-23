@@ -16,7 +16,6 @@ import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.andreea.cryptoright.R;
 import com.andreea.cryptoright.databinding.FragmentCoinDetailsBinding;
@@ -86,12 +85,13 @@ public class CoinDetailsFragment extends Fragment {
         binding.addToWatchlistFab.setOnClickListener(v -> {
             GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getActivity());
             if (acct != null) {
-                String personId = acct.getId();
-                // add to watchlist
+                String userId = acct.getId();
+                // add current coin to user watchlist
+                viewModel.getUserWatchlist(userId).observe(this, watchlist ->
+                        viewModel.addCoinToWatchlist(userId, coinId, watchlist));
             } else {
                 Snackbar.make(binding.detailsCoordLayout, R.string.message_sign_in,
-                        Snackbar.LENGTH_SHORT)
-                        .show();
+                        Snackbar.LENGTH_SHORT).show();
             }
         });
     }
