@@ -8,6 +8,9 @@
         <variable
             name="clickHandler"
             type="android.view.View.OnClickListener" />
+        <variable
+            name="isCoinInWatchlist"
+            type="boolean"/>
     </data>
 
     <android.support.design.widget.CoordinatorLayout
@@ -48,7 +51,8 @@
             android:layout_margin="16dp"
             android:src="@drawable/ic_plus_black_24dp"
             app:layout_anchor="@id/details_container"
-            app:layout_anchorGravity="bottom|right|end" />
+            app:layout_anchorGravity="bottom|right|end"
+            app:visibleGone="@{!isCoinInWatchlist}"/>
 
     </android.support.design.widget.CoordinatorLayout>
 

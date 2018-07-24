@@ -81,9 +81,17 @@ public class CoinDetailsFragment extends Fragment {
                 mAdapter.setDetails(coinDetails);
             });
         });
+        binding.setIsCoinInWatchlist(false);
+        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getActivity());
+        if (acct!=null){
+            viewModel.getUserWatchlist(acct.getId()).observe(this, watchlist -> {
+                if (watchlist!=null && watchlist.getUserCoinIds().contains(coinId)){
+                    binding.setIsCoinInWatchlist(true);
+                }
+            });
+        }
 
         binding.addToWatchlistFab.setOnClickListener(v -> {
-            GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getActivity());
             if (acct != null) {
                 String userId = acct.getId();
                 // add current coin to user watchlist
