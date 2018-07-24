@@ -1,6 +1,8 @@
 package com.andreea.cryptoright.ui;
 
 
+import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -13,6 +15,7 @@ import android.view.ViewGroup;
 
 import com.andreea.cryptoright.R;
 import com.andreea.cryptoright.databinding.FragmentProfileBinding;
+import com.andreea.cryptoright.model.Coin;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -31,6 +34,9 @@ public class ProfileFragment extends Fragment {
     private static final String TAG = ProfileFragment.class.getSimpleName();
     private GoogleSignInClient mGoogleSignInClient;
     private FragmentProfileBinding binding;
+    private CoinsRecyclerViewAdapter mAdapter;
+    private CoinsViewModel viewModel;
+    private IClickCallback<Coin> mListener;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -51,6 +57,8 @@ public class ProfileFragment extends Fragment {
         binding.setIsSignedIn(false);
         binding.signInButton.setOnClickListener(this::onClick);
         binding.signOutButton.setOnClickListener(this::onClick);
+        mAdapter = new CoinsRecyclerViewAdapter(mListener);
+        binding.watchlistCoins.setAdapter(mAdapter);
         return binding.getRoot();
     }
 
@@ -67,6 +75,8 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        viewModel = ViewModelProviders.of(this).get(CoinsViewModel.class);
+
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -94,20 +104,30 @@ public class ProfileFragment extends Fragment {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
             // Signed in successfully, show authenticated UI.
+            Log.d(TAG, "handleSignInResult: success" + account.getDisplayName() + " " + account.getPhotoUrl());
             binding.setIsLoading(false);
             binding.setIsSignedIn(true);
-            if (account.getPhotoUrl()!=null){
+            if (account.getPhotoUrl() != null) {
                 Picasso.get().load(account.getPhotoUrl()).placeholder(android.R.drawable.stat_notify_error)
                         .into(binding.profilePicture);
             }
             binding.profileNameTv.setText(account.getDisplayName());
-            Log.i(TAG, "handleSignInResult: success"+account.getDisplayName()+" "+account.getPhotoUrl());
+            String userId = account.getId();
+            loadUserWatchlist(userId);
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
             Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
             binding.setIsLoading(false);
         }
+    }
+
+    private void loadUserWatchlist(String userId) {
+        viewModel.getWatchlistCoins(userId).observe(this, coins -> {
+            if (coins != null) {
+                mAdapter.setCoinList(coins);
+            }
+        });
     }
 
     private void onClick(View v) {
@@ -120,5 +140,22 @@ public class ProfileFragment extends Fragment {
                 signOut();
                 break;
         }
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof IClickCallback) {
+            mListener = (IClickCallback) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement IClickCallback");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
     }
 }
