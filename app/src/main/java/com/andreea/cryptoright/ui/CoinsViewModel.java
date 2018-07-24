@@ -119,6 +119,10 @@ public class CoinsViewModel extends AndroidViewModel {
 
     public LiveData<List<Coin>> getWatchlistCoins(String userId) {
         return Transformations.switchMap(watchlistDao.getUserWatchlist(userId),
-                input -> coinDao.getCoinsByIds(input.getUserCoinIds()));
+                input -> {
+                    if (input != null) {
+                        return coinDao.getCoinsByIds(input.getUserCoinIds());
+                    } else return new MutableLiveData<>();
+                });
     }
 }

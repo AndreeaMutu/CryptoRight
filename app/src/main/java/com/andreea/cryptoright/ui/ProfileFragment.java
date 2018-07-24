@@ -81,6 +81,10 @@ public class ProfileFragment extends Fragment {
                 .requestEmail()
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(getActivity(), gso);
+        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getActivity());
+        if (acct != null) {
+            updateUiForAccount(acct);
+        }
     }
 
     private void signIn() {
@@ -104,22 +108,26 @@ public class ProfileFragment extends Fragment {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
             // Signed in successfully, show authenticated UI.
-            Log.d(TAG, "handleSignInResult: success" + account.getDisplayName() + " " + account.getPhotoUrl());
-            binding.setIsLoading(false);
-            binding.setIsSignedIn(true);
-            if (account.getPhotoUrl() != null) {
-                Picasso.get().load(account.getPhotoUrl()).placeholder(android.R.drawable.stat_notify_error)
-                        .into(binding.profilePicture);
-            }
-            binding.profileNameTv.setText(account.getDisplayName());
-            String userId = account.getId();
-            loadUserWatchlist(userId);
+            updateUiForAccount(account);
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
             Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
             binding.setIsLoading(false);
         }
+    }
+
+    private void updateUiForAccount(GoogleSignInAccount account) {
+        Log.d(TAG, "handleSignInResult: success" + account.getDisplayName() + " " + account.getPhotoUrl());
+        binding.setIsLoading(false);
+        binding.setIsSignedIn(true);
+        if (account.getPhotoUrl() != null) {
+            Picasso.get().load(account.getPhotoUrl()).placeholder(android.R.drawable.stat_notify_error)
+                    .into(binding.profilePicture);
+        }
+        binding.profileNameTv.setText(account.getDisplayName());
+        String userId = account.getId();
+        loadUserWatchlist(userId);
     }
 
     private void loadUserWatchlist(String userId) {
