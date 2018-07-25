@@ -3,9 +3,11 @@ package com.andreea.cryptoright;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.RemoteViews;
 
+import com.andreea.cryptoright.helper.Constants;
 import com.andreea.cryptoright.model.CoinPrice;
 import com.andreea.cryptoright.model.CoinPriceResponse;
 import com.andreea.cryptoright.web.CryptoCompareService;
@@ -31,7 +33,7 @@ public class CryptoWidget extends AppWidgetProvider {
 
         String coinSymbol = CryptoWidgetConfigureActivity.loadSymbolPref(context, appWidgetId);
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://min-api.cryptocompare.com")
+                .baseUrl(Constants.COIN_API_BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         Log.d(TAG, "updateAppWidget: ");
@@ -39,7 +41,7 @@ public class CryptoWidget extends AppWidgetProvider {
         Call<CoinPriceResponse> coinPriceResponseCall = service.getCoinPrices(coinSymbol, "USD");
         coinPriceResponseCall.enqueue(new Callback<CoinPriceResponse>() {
             @Override
-            public void onResponse(Call<CoinPriceResponse> call, Response<CoinPriceResponse> response) {
+            public void onResponse(@NonNull Call<CoinPriceResponse> call, @NonNull Response<CoinPriceResponse> response) {
                 if (response.isSuccessful()){
                     CoinPriceResponse body = response.body();
                     Map<String, Map<String, CoinPrice>> priceData = body.getPriceData();

@@ -53,11 +53,11 @@ public class CoinsDetailsRecyclerViewAdapter extends RecyclerView.Adapter<CoinsD
 
     }
 
-    public class DetailViewHolder extends RecyclerView.ViewHolder {
+    class DetailViewHolder extends RecyclerView.ViewHolder {
 
         private CoinDetailItemBinding binding;
 
-        public DetailViewHolder(CoinDetailItemBinding binding) {
+        DetailViewHolder(CoinDetailItemBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }

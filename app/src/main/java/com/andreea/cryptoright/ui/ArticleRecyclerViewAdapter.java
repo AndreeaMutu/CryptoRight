@@ -69,11 +69,11 @@ public class ArticleRecyclerViewAdapter extends RecyclerView.Adapter<ArticleRecy
         notifyDataSetChanged();
     }
 
-    public class ArticleViewHolder extends RecyclerView.ViewHolder {
+    class ArticleViewHolder extends RecyclerView.ViewHolder {
 
         private ArticleItemBinding binding;
 
-        public ArticleViewHolder(ArticleItemBinding binding) {
+        ArticleViewHolder(ArticleItemBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }

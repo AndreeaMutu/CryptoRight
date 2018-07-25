@@ -16,25 +16,16 @@ import com.andreea.cryptoright.R;
 import com.andreea.cryptoright.databinding.FragmentCoinListBinding;
 import com.andreea.cryptoright.model.Coin;
 
-/**
- * A fragment representing a list of Coins.
- * <p/>
- * Activities containing this fragment MUST implement the {@link CoinClickCallback}
- * interface.
- */
+import static com.andreea.cryptoright.helper.Constants.ARG_COLUMN_COUNT;
+
 public class CoinsFragment extends Fragment {
 
-    private static final String ARG_COLUMN_COUNT = "column-count";
     private int mColumnCount = 1;
     private IClickCallback<Coin> mListener;
 
     private FragmentCoinListBinding mBinding;
     private CoinsRecyclerViewAdapter mAdapter;
 
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
     public CoinsFragment() {
     }
 
@@ -94,7 +85,7 @@ public class CoinsFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof IClickCallback) {
-            mListener = (IClickCallback) context;
+            mListener = (IClickCallback<Coin>) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement IClickCallback");

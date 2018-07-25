@@ -7,6 +7,7 @@ import android.arch.lifecycle.MutableLiveData;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.andreea.cryptoright.helper.Constants;
 import com.andreea.cryptoright.model.NewsArticle;
 import com.andreea.cryptoright.model.NewsResponse;
 import com.andreea.cryptoright.web.CryptoCompareService;
@@ -30,12 +31,12 @@ public class NewsViewModel extends AndroidViewModel {
     public LiveData<List<NewsArticle>> getArticles() {
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://min-api.cryptocompare.com")
+                .baseUrl(Constants.COIN_API_BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
         CryptoCompareService service = retrofit.create(CryptoCompareService.class);
-        Call<NewsResponse> coinPriceResponseCall = service.getNews("EN");
+        Call<NewsResponse> coinPriceResponseCall = service.getNews(Constants.NEWS_LANGUAGE);
         MutableLiveData<List<NewsArticle>> newsLiveData = new MutableLiveData<>();
         coinPriceResponseCall.enqueue(new Callback<NewsResponse>() {
             @Override

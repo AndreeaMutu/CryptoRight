@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 
 import com.andreea.cryptoright.R;
 import com.andreea.cryptoright.databinding.FragmentCoinDetailsBinding;
+import com.andreea.cryptoright.helper.Constants;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -32,7 +33,6 @@ import java.util.List;
  * create an instance of this fragment.
  */
 public class CoinDetailsFragment extends Fragment {
-    private static final String COIN_KEY = "coin-id";
 
     private String coinId;
     private FragmentCoinDetailsBinding binding;
@@ -46,7 +46,7 @@ public class CoinDetailsFragment extends Fragment {
     public static CoinDetailsFragment newInstance(String id) {
         CoinDetailsFragment fragment = new CoinDetailsFragment();
         Bundle args = new Bundle();
-        args.putString(COIN_KEY, id);
+        args.putString(Constants.ARG_COIN_ID, id);
         fragment.setArguments(args);
         return fragment;
     }
@@ -55,7 +55,7 @@ public class CoinDetailsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            coinId = getArguments().getString(COIN_KEY);
+            coinId = getArguments().getString(Constants.ARG_COIN_ID);
         }
     }
 
@@ -67,12 +67,14 @@ public class CoinDetailsFragment extends Fragment {
                 ViewModelProviders.of(this).get(CoinsViewModel.class);
 
         viewModel.getCoinDetails(coinId).observe(this, details -> {
-            coinDetails.addAll(details);
-            mAdapter.setDetails(coinDetails);
+            if (details != null) {
+                coinDetails.addAll(details);
+                mAdapter.setDetails(coinDetails);
+            }
         });
 
         String refCcy = PreferenceManager.getDefaultSharedPreferences(getActivity())
-                .getString(MainActivity.PREF_REF_CCY_SYMBOL, getString(R.string.ccy_eur));
+                .getString(Constants.PREF_REF_CCY_SYMBOL, getString(R.string.ccy_eur));
 
         viewModel.getCoinById(coinId).observe(this, coin -> {
             binding.setClickHandler(view -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(coin.getUrl()))));
@@ -84,9 +86,9 @@ public class CoinDetailsFragment extends Fragment {
         });
         binding.setIsCoinInWatchlist(false);
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getActivity());
-        if (acct!=null){
+        if (acct != null) {
             viewModel.getUserWatchlist(acct.getId()).observe(this, watchlist -> {
-                if (watchlist!=null && watchlist.getUserCoinIds().contains(coinId)){
+                if (watchlist != null && watchlist.getUserCoinIds().contains(coinId)) {
                     binding.setIsCoinInWatchlist(true);
                 }
             });

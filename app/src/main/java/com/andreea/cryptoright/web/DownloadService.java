@@ -1,9 +1,11 @@
 package com.andreea.cryptoright.web;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.andreea.cryptoright.db.CoinRoomDatabase;
+import com.andreea.cryptoright.helper.Constants;
 import com.andreea.cryptoright.model.Coin;
 import com.andreea.cryptoright.model.CoinListResponse;
 import com.firebase.jobdispatcher.JobParameters;
@@ -23,7 +25,7 @@ public class DownloadService extends JobService {
     @Override
     public boolean onStartJob(final JobParameters job) {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://min-api.cryptocompare.com")
+                .baseUrl(Constants.COIN_API_BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -33,7 +35,7 @@ public class DownloadService extends JobService {
         final CoinRoomDatabase db = CoinRoomDatabase.getDatabase(context);
         coinListResponseCall.enqueue(new Callback<CoinListResponse>() {
             @Override
-            public void onResponse(Call<CoinListResponse> call, Response<CoinListResponse> response) {
+            public void onResponse(@NonNull Call<CoinListResponse> call, @NonNull Response<CoinListResponse> response) {
                 Log.d(TAG, "Response web service."+ response);
                 if (response.isSuccessful()) {
                     CoinListResponse responseBody = response.body();

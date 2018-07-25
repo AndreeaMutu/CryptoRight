@@ -13,6 +13,7 @@ import com.andreea.cryptoright.R;
 import com.andreea.cryptoright.db.CoinDao;
 import com.andreea.cryptoright.db.CoinRoomDatabase;
 import com.andreea.cryptoright.db.WatchlistDao;
+import com.andreea.cryptoright.helper.Constants;
 import com.andreea.cryptoright.model.Coin;
 import com.andreea.cryptoright.model.CoinPrice;
 import com.andreea.cryptoright.model.CoinPriceResponse;
@@ -64,7 +65,7 @@ public class CoinsViewModel extends AndroidViewModel {
     public LiveData<List<Pair<Integer, String>>> getCoinPriceDetails(String coinSymbol, String referenceCcy) {
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://min-api.cryptocompare.com")
+                .baseUrl(Constants.COIN_API_BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

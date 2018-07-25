@@ -22,12 +22,13 @@ public class CoinsRecyclerViewAdapter extends RecyclerView.Adapter<CoinsRecycler
     private List<Coin> mValues;
     private final IClickCallback<Coin> mListener;
 
-    public CoinsRecyclerViewAdapter(IClickCallback<Coin> listener) {
+    CoinsRecyclerViewAdapter(IClickCallback<Coin> listener) {
         mListener = listener;
     }
 
+    @NonNull
     @Override
-    public CoinViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public CoinViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         CoinItemBinding binding = DataBindingUtil
                 .inflate(LayoutInflater.from(parent.getContext()), R.layout.coin_item,
                         parent, false);
@@ -91,11 +92,11 @@ public class CoinsRecyclerViewAdapter extends RecyclerView.Adapter<CoinsRecycler
         }
     }
 
-    public class CoinViewHolder extends RecyclerView.ViewHolder {
+    class CoinViewHolder extends RecyclerView.ViewHolder {
 
         private CoinItemBinding binding;
 
-        public CoinViewHolder(CoinItemBinding binding) {
+        CoinViewHolder(CoinItemBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }

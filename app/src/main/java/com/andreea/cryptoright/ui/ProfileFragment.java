@@ -154,7 +154,7 @@ public class ProfileFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof IClickCallback) {
-            mListener = (IClickCallback) context;
+            mListener = (IClickCallback<Coin>) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement IClickCallback");

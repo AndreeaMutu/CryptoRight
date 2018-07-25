@@ -16,6 +16,7 @@ import android.view.MenuItem;
 
 import com.andreea.cryptoright.R;
 import com.andreea.cryptoright.databinding.ActivityMainBinding;
+import com.andreea.cryptoright.helper.Constants;
 import com.andreea.cryptoright.model.Coin;
 import com.andreea.cryptoright.web.DownloadService;
 import com.firebase.jobdispatcher.FirebaseJobDispatcher;
@@ -25,7 +26,6 @@ import com.firebase.jobdispatcher.Job;
 public class MainActivity extends AppCompatActivity implements IClickCallback<Coin> {
 
     private static final String TAG = MainActivity.class.getSimpleName();
-    public static final String PREF_REF_CCY_SYMBOL = "ref_ccy_sym";
     private ActionBar toolbar;
 
     private String title;
@@ -33,23 +33,24 @@ public class MainActivity extends AppCompatActivity implements IClickCallback<Co
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = item -> {
         Fragment fragment = null;
-                switch (item.getItemId()) {
-                    case R.id.navigation_coins:
-                        title = getString(R.string.title_coins);
-                        fragment = CoinsFragment.newInstance(1);
-                        break;
-                    case R.id.navigation_news:
-                        title = getString(R.string.title_news);
-                        fragment = ArticleFragment.newInstance(2);
-                        break;
-                    case R.id.navigation_profile:
-                        title = getString(R.string.title_profile);
-                        fragment = ProfileFragment.newInstance();
-                        break;
-                }
-                setToolbarTitle();
-                return loadFragment(fragment, false);
-            };
+        switch (item.getItemId()) {
+            case R.id.navigation_coins:
+                title = getString(R.string.title_coins);
+                fragment = CoinsFragment.newInstance(1);
+                break;
+            case R.id.navigation_news:
+                title = getString(R.string.title_news);
+                fragment = ArticleFragment.newInstance(2);
+                break;
+            case R.id.navigation_profile:
+                title = getString(R.string.title_profile);
+                fragment = ProfileFragment.newInstance();
+                break;
+        }
+        setToolbarTitle();
+        return loadFragment(fragment, false);
+    };
+
     private boolean loadFragment(Fragment fragment, boolean save) {
         //switching fragment
         if (fragment != null) {
@@ -64,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements IClickCallback<Co
         }
         return false;
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements IClickCallback<Co
             FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(this));
             Job myJob = dispatcher.newJobBuilder()
                     .setService(DownloadService.class) // the JobService that will be called
-                    .setTag("coin-tag")        // uniquely identifies the job
+                    .setTag(Constants.COINS_JOB_TAG)        // uniquely identifies the job
                     .build();
 
             dispatcher.mustSchedule(myJob);
@@ -100,8 +102,8 @@ public class MainActivity extends AppCompatActivity implements IClickCallback<Co
         super.onPrepareOptionsMenu(menu);
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         String eur = getString(R.string.ccy_eur);
-        String savedCcy = sharedPreferences.getString(PREF_REF_CCY_SYMBOL, eur);
-        if (savedCcy.equals(eur)){
+        String savedCcy = sharedPreferences.getString(Constants.PREF_REF_CCY_SYMBOL, eur);
+        if (savedCcy.equals(eur)) {
             menu.findItem(R.id.ccy_eur).setChecked(true);
         } else {
             menu.findItem(R.id.ccy_usd).setChecked(true);
@@ -117,12 +119,12 @@ public class MainActivity extends AppCompatActivity implements IClickCallback<Co
             setToolbarTitle();
             return true;
         }
-        if (id == R.id.ccy_eur || id == R.id.ccy_usd){
+        if (id == R.id.ccy_eur || id == R.id.ccy_usd) {
             item.setChecked(true);
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
             sharedPreferences.edit()
-                    .putString(PREF_REF_CCY_SYMBOL, String.valueOf(item.getTitle()))
-            .apply();
+                    .putString(Constants.PREF_REF_CCY_SYMBOL, String.valueOf(item.getTitle()))
+                    .apply();
             return true;
         }
         return super.onOptionsItemSelected(item);

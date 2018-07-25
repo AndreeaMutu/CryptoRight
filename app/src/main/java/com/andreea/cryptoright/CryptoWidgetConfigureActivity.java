@@ -57,7 +57,7 @@ public class CryptoWidgetConfigureActivity extends Activity {
         if (symbol != null) {
             return symbol;
         } else {
-            return context.getString(R.string.appwidget_text);
+            return context.getString(R.string.example_widget_coin);
         }
     }
 
