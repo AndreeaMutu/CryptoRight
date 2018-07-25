@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 
 import com.andreea.cryptoright.R;
 import com.andreea.cryptoright.databinding.FragmentCoinDetailsBinding;
+import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 
@@ -111,6 +112,11 @@ public class CoinDetailsFragment extends Fragment {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_coin_details, container, false);
         mAdapter = new CoinsDetailsRecyclerViewAdapter();
         binding.detailsContainer.setAdapter(mAdapter);
+
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .build();
+        binding.adView.loadAd(adRequest);
         return binding.getRoot();
     }
 }

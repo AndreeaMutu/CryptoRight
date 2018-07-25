@@ -65,6 +65,10 @@ dependencies {
     implementation 'com.firebase:firebase-jobdispatcher:0.8.5'
     // Google Sign In
     implementation 'com.google.android.gms:play-services-auth:15.0.1'
+
+    // Ads
+    implementation 'com.google.android.gms:play-services-ads:15.0.1'
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
