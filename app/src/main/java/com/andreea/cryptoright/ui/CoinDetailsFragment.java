@@ -80,8 +80,10 @@ public class CoinDetailsFragment extends Fragment {
             binding.setClickHandler(view -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(coin.getUrl()))));
             ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(coin.getCoinName());
             viewModel.getCoinPriceDetails(coin.getSymbol(), refCcy).observe(this, pairs -> {
-                coinDetails.addAll(pairs);
-                mAdapter.setDetails(coinDetails);
+                if (pairs != null) {
+                    coinDetails.addAll(pairs);
+                    mAdapter.setDetails(coinDetails);
+                }
             });
         });
         binding.setIsCoinInWatchlist(false);

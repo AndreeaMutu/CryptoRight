@@ -30,7 +30,7 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             app:layoutManager="LinearLayoutManager"
-            tools:context=".ui.ArticleFragment"
+            tools:context=".ui.NewsFragment"
             tools:listitem="@layout/article_item" />
     </FrameLayout>
 </layout>

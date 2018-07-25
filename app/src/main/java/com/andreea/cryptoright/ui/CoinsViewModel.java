@@ -21,6 +21,7 @@ import com.andreea.cryptoright.model.Watchlist;
 import com.andreea.cryptoright.web.CryptoCompareService;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -86,11 +87,16 @@ public class CoinsViewModel extends AndroidViewModel {
             @Override
             public void onFailure(Call<CoinPriceResponse> call, Throwable t) {
                 Log.e(TAG, "Call to price data failed", t);
+                priceDetails.postValue(null);
             }
         });
 
         return
                 Transformations.map(priceDetails, priceData -> {
+
+                    if (priceData == null) {
+                        return Collections.emptyList();
+                    }
                     List<Pair<Integer, String>> details = new ArrayList<>();
                     details.add(new Pair<>(R.string.label_coin_price, priceData.getPrice()));
                     details.add(new Pair<>(R.string.label_coin_market, priceData.getMarket()));

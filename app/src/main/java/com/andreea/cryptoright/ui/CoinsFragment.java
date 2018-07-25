@@ -57,8 +57,6 @@ public class CoinsFragment extends Fragment {
             if (coins != null) {
                 mBinding.setIsLoading(false);
                 mAdapter.setCoinList(coins);
-            } else {
-                mBinding.setIsLoading(true);
             }
         });
     }

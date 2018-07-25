@@ -16,18 +16,18 @@ import com.andreea.cryptoright.R;
 import com.andreea.cryptoright.databinding.FragmentArticleListBinding;
 import com.andreea.cryptoright.helper.Constants;
 
-public class ArticleFragment extends Fragment {
+public class NewsFragment extends Fragment {
 
     private int mColumnCount = 2;
     private FragmentArticleListBinding mBinding;
     private ArticleRecyclerViewAdapter mAdapter;
 
-    public ArticleFragment() {
+    public NewsFragment() {
     }
 
     @SuppressWarnings("unused")
-    public static ArticleFragment newInstance(int columnCount) {
-        ArticleFragment fragment = new ArticleFragment();
+    public static NewsFragment newInstance(int columnCount) {
+        NewsFragment fragment = new NewsFragment();
         Bundle args = new Bundle();
         args.putInt(Constants.ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
@@ -53,8 +53,6 @@ public class ArticleFragment extends Fragment {
             if (articles != null) {
                 mBinding.setIsLoading(false);
                 mAdapter.setArticles(articles);
-            } else {
-                mBinding.setIsLoading(true);
             }
         });
     }
@@ -75,15 +73,4 @@ public class ArticleFragment extends Fragment {
         mBinding.articleList.setAdapter(mAdapter);
         return root;
     }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-    }
-
 }

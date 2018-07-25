@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements IClickCallback<Co
                 break;
             case R.id.navigation_news:
                 title = getString(R.string.title_news);
-                fragment = ArticleFragment.newInstance(2);
+                fragment = NewsFragment.newInstance(2);
                 break;
             case R.id.navigation_profile:
                 title = getString(R.string.title_profile);

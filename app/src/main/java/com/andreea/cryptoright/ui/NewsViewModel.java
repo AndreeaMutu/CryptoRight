@@ -12,6 +12,7 @@ import com.andreea.cryptoright.model.NewsArticle;
 import com.andreea.cryptoright.model.NewsResponse;
 import com.andreea.cryptoright.web.CryptoCompareService;
 
+import java.util.Collections;
 import java.util.List;
 
 import retrofit2.Call;
@@ -56,6 +57,7 @@ public class NewsViewModel extends AndroidViewModel {
             @Override
             public void onFailure(@NonNull Call<NewsResponse> call, @NonNull Throwable t) {
                 Log.e(TAG, "Call to news service failed", t);
+                newsLiveData.postValue(Collections.emptyList());
             }
         });
 
