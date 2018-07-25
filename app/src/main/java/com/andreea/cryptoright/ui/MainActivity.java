@@ -1,6 +1,7 @@
 package com.andreea.cryptoright.ui;
 
 import android.content.SharedPreferences;
+import android.databinding.DataBindingUtil;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -14,14 +15,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.andreea.cryptoright.R;
+import com.andreea.cryptoright.databinding.ActivityMainBinding;
 import com.andreea.cryptoright.model.Coin;
 import com.andreea.cryptoright.web.DownloadService;
 import com.firebase.jobdispatcher.FirebaseJobDispatcher;
 import com.firebase.jobdispatcher.GooglePlayDriver;
 import com.firebase.jobdispatcher.Job;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements IClickCallback<Coin> {
 
@@ -29,8 +28,6 @@ public class MainActivity extends AppCompatActivity implements IClickCallback<Co
     public static final String PREF_REF_CCY_SYMBOL = "ref_ccy_sym";
     private ActionBar toolbar;
 
-    @BindView(R.id.navigation)
-    BottomNavigationView navigation;
     private String title;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -70,15 +67,12 @@ public class MainActivity extends AppCompatActivity implements IClickCallback<Co
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
-
+        ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         toolbar = getSupportActionBar();
 
-
         if (savedInstanceState == null) {
-            navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-            navigation.setSelectedItemId(R.id.navigation_coins);
+            binding.navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+            binding.navigation.setSelectedItemId(R.id.navigation_coins);
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.addOnBackStackChangedListener(() -> {
                 int stackHeight = fragmentManager.getBackStackEntryCount();
@@ -98,8 +92,6 @@ public class MainActivity extends AppCompatActivity implements IClickCallback<Co
                     .build();
 
             dispatcher.mustSchedule(myJob);
-
-
         }
     }
 
