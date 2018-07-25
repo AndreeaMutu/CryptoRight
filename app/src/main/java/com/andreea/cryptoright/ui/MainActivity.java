@@ -72,20 +72,22 @@ public class MainActivity extends AppCompatActivity implements IClickCallback<Co
         ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         toolbar = getSupportActionBar();
 
+        binding.navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.addOnBackStackChangedListener(() -> {
+            int stackHeight = fragmentManager.getBackStackEntryCount();
+            if (stackHeight > 0) {
+                toolbar.setHomeButtonEnabled(true);
+                toolbar.setDisplayHomeAsUpEnabled(true);
+            } else {
+                toolbar.setDisplayHomeAsUpEnabled(false);
+                toolbar.setHomeButtonEnabled(false);
+            }
+        });
+
         if (savedInstanceState == null) {
-            binding.navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
             binding.navigation.setSelectedItemId(R.id.navigation_coins);
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.addOnBackStackChangedListener(() -> {
-                int stackHeight = fragmentManager.getBackStackEntryCount();
-                if (stackHeight > 0) {
-                    toolbar.setHomeButtonEnabled(true);
-                    toolbar.setDisplayHomeAsUpEnabled(true);
-                } else {
-                    toolbar.setDisplayHomeAsUpEnabled(false);
-                    toolbar.setHomeButtonEnabled(false);
-                }
-            });
 
             FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(this));
             Job myJob = dispatcher.newJobBuilder()
@@ -93,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements IClickCallback<Co
                     .setTag(Constants.COINS_JOB_TAG)        // uniquely identifies the job
                     .build();
 
-            dispatcher.mustSchedule(myJob);
+            //dispatcher.mustSchedule(myJob);
         }
     }
 
