@@ -76,7 +76,7 @@ public class CryptoWidgetConfigureActivity extends Activity {
         setResult(RESULT_CANCELED);
 
         setContentView(R.layout.crypto_widget_configure);
-        mAppWidgetText = (EditText) findViewById(R.id.coin_symbol_tv);
+        mAppWidgetText = (EditText) findViewById(R.id.coin_symbol_et);
         findViewById(R.id.add_button).setOnClickListener(mOnClickListener);
 
         // Find the widget id from the intent.

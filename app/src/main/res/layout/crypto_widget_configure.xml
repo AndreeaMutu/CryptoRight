@@ -12,7 +12,7 @@
         android:text="@string/configure" />
 
     <EditText
-        android:id="@+id/coin_symbol_tv"
+        android:id="@+id/coin_symbol_et"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="text" />
