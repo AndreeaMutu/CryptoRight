@@ -4,7 +4,7 @@
 
     <dimen name="fragment_container_bottom_margin">60dp</dimen>
 
-    <dimen name="text_margin">16dp</dimen>
+    <dimen name="view_margin">16dp</dimen>
 
     <dimen name="widget_margin">8dp</dimen>
 
@@ -13,5 +13,9 @@
     <dimen name="card_corner_radius">8dp</dimen>
     <dimen name="card_elevation">4dp</dimen>
     <dimen name="article_image_height">120dp</dimen>
+    <dimen name="coin_logo_size">50dp</dimen>
+    <dimen name="widget_config_padding">16dp</dimen>
+    <dimen name="widget_config_margin">8dp</dimen>
+    <dimen name="profile_picture_size">100dp</dimen>
 
 </resources>

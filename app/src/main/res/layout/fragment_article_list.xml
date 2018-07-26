@@ -27,8 +27,8 @@
             android:name="com.andreea.cryptoright.ui.ArticleFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
+            android:layout_marginLeft="@dimen/view_margin"
+            android:layout_marginRight="@dimen/view_margin"
             app:layoutManager="LinearLayoutManager"
             tools:context=".ui.NewsFragment"
             tools:listitem="@layout/article_item" />

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -27,18 +28,19 @@
 
             <ImageView
                 android:id="@+id/profile_picture"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="@dimen/profile_picture_size"
+                android:layout_height="@dimen/profile_picture_size"
                 android:layout_gravity="center_horizontal"
                 android:adjustViewBounds="true"
                 android:scaleType="fitXY"
-                android:src="@drawable/ic_account_black_24dp" />
+                android:src="@drawable/ic_account_black_24dp"
+                android:contentDescription="@string/profile_picture_description" />
 
             <TextView
                 android:id="@+id/profile_name_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/text_margin"
+                android:layout_margin="@dimen/view_margin"
                 android:textAlignment="center"
                 tools:text="FirstName LastName" />
 
@@ -63,7 +65,7 @@
                 android:id="@+id/watchlist_coins"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/view_margin"
                 app:layoutManager="android.support.v7.widget.LinearLayoutManager"
                 tools:listitem="@layout/coin_item" />
         </LinearLayout>
