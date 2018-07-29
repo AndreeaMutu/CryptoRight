@@ -10,6 +10,7 @@ public final class Constants {
 
     public static final String COIN_API_BASE_URL = "https://min-api.cryptocompare.com";
     public static final String NEWS_LANGUAGE = "EN";
+    public static final String ACTIVE_FRAGMENT_KEY = "active-fragment";
 
     private Constants() {
     }

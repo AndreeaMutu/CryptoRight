@@ -8,9 +8,9 @@ import android.preference.PreferenceManager;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -27,56 +27,60 @@ public class MainActivity extends AppCompatActivity implements IClickCallback<Co
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private ActionBar toolbar;
-
-    private String title;
+    private String activeFragmentTag;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = item -> {
-        Fragment fragment = null;
+        String fragmentTag = null;
         switch (item.getItemId()) {
             case R.id.navigation_coins:
-                title = getString(R.string.title_coins);
-                fragment = CoinsFragment.newInstance(1);
+                fragmentTag = getString(R.string.title_coins);
                 break;
             case R.id.navigation_news:
-                title = getString(R.string.title_news);
-                fragment = NewsFragment.newInstance(2);
+                fragmentTag = getString(R.string.title_news);
                 break;
             case R.id.navigation_profile:
-                title = getString(R.string.title_profile);
-                fragment = ProfileFragment.newInstance();
+                fragmentTag = getString(R.string.title_profile);
                 break;
         }
-        setToolbarTitle();
-        return loadFragment(fragment, false);
+        switchFragment(activeFragmentTag, fragmentTag);
+        return true;
     };
 
-    private boolean loadFragment(Fragment fragment, boolean save) {
-        //switching fragment
-        if (fragment != null) {
-            FragmentTransaction transaction = getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragment_container, fragment);
-            if (save) {
-                transaction.addToBackStack(null);
-            }
-            transaction.commit();
-            return true;
+    /*
+    Adapted from:
+    https://medium.com/@oluwabukunmi.aluko/bottom-navigation-view-with-fragments-a074bfd08711
+     */
+    private void switchFragment(String currentFragmentTag, String newFragmentTag) {
+        FragmentManager fm = getSupportFragmentManager();
+        int stackHeight = fm.getBackStackEntryCount();
+        if (stackHeight > 0) {
+            fm.popBackStackImmediate();
         }
-        return false;
+        Log.d(TAG, "switchFragment: Replacing fragment " + currentFragmentTag + " with " + newFragmentTag);
+
+        Fragment currentFragment = fm.findFragmentByTag(currentFragmentTag);
+        Fragment newFragment = fm.findFragmentByTag(newFragmentTag);
+        fm.beginTransaction().hide(currentFragment).show(newFragment).commit();
+        activeFragmentTag = newFragmentTag;
+        toolbar.setTitle(activeFragmentTag);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putString(Constants.ACTIVE_FRAGMENT_KEY, activeFragmentTag);
+        super.onSaveInstanceState(outState);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        setSupportActionBar(binding.toolbar);
         toolbar = getSupportActionBar();
-
-        binding.navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.addOnBackStackChangedListener(() -> {
-            int stackHeight = fragmentManager.getBackStackEntryCount();
+        FragmentManager fm = getSupportFragmentManager();
+        fm.addOnBackStackChangedListener(() -> {
+            int stackHeight = fm.getBackStackEntryCount();
             if (stackHeight > 0) {
                 toolbar.setHomeButtonEnabled(true);
                 toolbar.setDisplayHomeAsUpEnabled(true);
@@ -85,9 +89,15 @@ public class MainActivity extends AppCompatActivity implements IClickCallback<Co
                 toolbar.setHomeButtonEnabled(false);
             }
         });
-
+        binding.navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         if (savedInstanceState == null) {
-            binding.navigation.setSelectedItemId(R.id.navigation_coins);
+            Fragment coinsFragment = CoinsFragment.newInstance(1);
+            Fragment newsFragment = NewsFragment.newInstance(2);
+            Fragment profileFragment = ProfileFragment.newInstance();
+            fm.beginTransaction().add(R.id.fragment_container, profileFragment, getString(R.string.title_profile)).hide(profileFragment).commit();
+            fm.beginTransaction().add(R.id.fragment_container, newsFragment, getString(R.string.title_news)).hide(newsFragment).commit();
+            fm.beginTransaction().add(R.id.fragment_container, coinsFragment, getString(R.string.title_coins)).commit();
+            activeFragmentTag = getString(R.string.title_coins);
 
             FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(this));
             Job myJob = dispatcher.newJobBuilder()
@@ -95,8 +105,12 @@ public class MainActivity extends AppCompatActivity implements IClickCallback<Co
                     .setTag(Constants.COINS_JOB_TAG)        // uniquely identifies the job
                     .build();
 
-            //dispatcher.mustSchedule(myJob);
+            dispatcher.mustSchedule(myJob);
+        } else {
+            activeFragmentTag = savedInstanceState.getString(Constants.ACTIVE_FRAGMENT_KEY, getString(R.string.title_coins));
         }
+        Log.d(TAG, "onCreate: Active fragment  " + activeFragmentTag);
+        toolbar.setTitle(activeFragmentTag);
     }
 
     @Override
@@ -118,7 +132,6 @@ public class MainActivity extends AppCompatActivity implements IClickCallback<Co
         int id = item.getItemId();
         if (id == android.R.id.home) {
             getSupportFragmentManager().popBackStack();
-            setToolbarTitle();
             return true;
         }
         if (id == R.id.ccy_eur || id == R.id.ccy_usd) {
@@ -144,7 +157,6 @@ public class MainActivity extends AppCompatActivity implements IClickCallback<Co
         int stackHeight = fragmentManager.getBackStackEntryCount();
         if (stackHeight > 0) {
             fragmentManager.popBackStack();
-            setToolbarTitle();
         } else {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 finishAfterTransition();
@@ -154,15 +166,14 @@ public class MainActivity extends AppCompatActivity implements IClickCallback<Co
         }
     }
 
-    private void setToolbarTitle() {
-        toolbar.setDisplayHomeAsUpEnabled(false);
-        toolbar.setHomeButtonEnabled(false);
-        toolbar.setTitle(title);
-    }
-
     @Override
     public void onClick(Coin coin) {
         CoinDetailsFragment detailsFragment = CoinDetailsFragment.newInstance(coin.getId());
-        loadFragment(detailsFragment, true);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, detailsFragment)
+                .addToBackStack(null)
+                .commit();
+        //activeFragmentTag = getString(R.string.title_coins);
     }
 }
