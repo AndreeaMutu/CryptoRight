@@ -115,6 +115,7 @@ public class MainActivity extends AppCompatActivity implements IClickCallback<Co
         int id = item.getItemId();
         if (id == android.R.id.home) {
             getSupportFragmentManager().popBackStack();
+            toolbar.setTitle(activeFragmentTag);
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -134,6 +135,7 @@ public class MainActivity extends AppCompatActivity implements IClickCallback<Co
                 finish();
             }
         }
+        toolbar.setTitle(activeFragmentTag);
     }
 
     @Override

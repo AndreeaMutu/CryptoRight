@@ -16,6 +16,7 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.ShareActionProvider;
+import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -43,6 +44,7 @@ import static com.andreea.cryptoright.helper.Constants.PREF_REF_CCY_SYMBOL;
  */
 public class CoinDetailsFragment extends Fragment {
 
+    private static final String TAG = CoinDetailsFragment.class.getSimpleName();
     private String coinId;
     private FragmentCoinDetailsBinding binding;
     private CoinsDetailsRecyclerViewAdapter mAdapter;
@@ -51,9 +53,11 @@ public class CoinDetailsFragment extends Fragment {
     private CoinsViewModel coinsViewModel;
     private SharedPreferences.OnSharedPreferenceChangeListener preferenceChangeListener = (sharedPreferences, key) -> {
         if (key.equals(PREF_REF_CCY_SYMBOL)) {
+            Log.d(TAG, "Preferences updated: "+ sharedPreferences.getString(key, getString(R.string.ccy_eur)));
             updateUiWithCoinPriceDetails(coinsViewModel, sharedPreferences.getString(key, getString(R.string.ccy_eur)));
         }
     };
+    private ActionBar toolbar;
 
     public CoinDetailsFragment() {
         // Required empty public constructor
@@ -81,6 +85,10 @@ public class CoinDetailsFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         coinsViewModel = ViewModelProviders.of(this).get(CoinsViewModel.class);
+
+        toolbar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        toolbar.setHomeButtonEnabled(true);
+        toolbar.setDisplayHomeAsUpEnabled(true);
 
         coinsViewModel.getCoinDetails(coinId).observe(this, details -> {
             if (details != null) {
@@ -117,9 +125,9 @@ public class CoinDetailsFragment extends Fragment {
     }
 
     private void updateUiWithCoinPriceDetails(CoinsViewModel viewModel, String refCcy) {
+        Log.d(TAG, "updateUiWithCoinPriceDetails: ref ccy"+refCcy);
         viewModel.getCoinById(coinId).observe(this, coin -> {
             binding.setClickHandler(view -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(coin.getUrl()))));
-            ActionBar toolbar = ((AppCompatActivity) getActivity()).getSupportActionBar();
             toolbar.setTitle(coin.getCoinName());
             viewModel.getCoinPriceDetails(coin.getSymbol(), refCcy).observe(this, pairs -> {
                 if (pairs != null) {
@@ -172,7 +180,6 @@ public class CoinDetailsFragment extends Fragment {
             sendIntent.setType("text/plain");
             mShareActionProvider.setShareIntent(sendIntent);
         }
-
     }
 
     @Override
