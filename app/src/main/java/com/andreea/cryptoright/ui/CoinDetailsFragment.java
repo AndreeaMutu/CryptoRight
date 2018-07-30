@@ -48,6 +48,12 @@ public class CoinDetailsFragment extends Fragment {
     private CoinsDetailsRecyclerViewAdapter mAdapter;
     private List<Pair<Integer, String>> coinDetails = new ArrayList<>();
     private ShareActionProvider mShareActionProvider;
+    private CoinsViewModel coinsViewModel;
+    private SharedPreferences.OnSharedPreferenceChangeListener preferenceChangeListener = (sharedPreferences, key) -> {
+        if (key.equals(PREF_REF_CCY_SYMBOL)) {
+            updateUiWithCoinPriceDetails(coinsViewModel, sharedPreferences.getString(key, getString(R.string.ccy_eur)));
+        }
+    };
 
     public CoinDetailsFragment() {
         // Required empty public constructor
@@ -74,10 +80,9 @@ public class CoinDetailsFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        final CoinsViewModel viewModel =
-                ViewModelProviders.of(this).get(CoinsViewModel.class);
+        coinsViewModel = ViewModelProviders.of(this).get(CoinsViewModel.class);
 
-        viewModel.getCoinDetails(coinId).observe(this, details -> {
+        coinsViewModel.getCoinDetails(coinId).observe(this, details -> {
             if (details != null) {
                 coinDetails.addAll(details);
                 mAdapter.setDetails(coinDetails);
@@ -87,6 +92,31 @@ public class CoinDetailsFragment extends Fragment {
         String refCcy = PreferenceManager.getDefaultSharedPreferences(getActivity())
                 .getString(PREF_REF_CCY_SYMBOL, getString(R.string.ccy_eur));
 
+        updateUiWithCoinPriceDetails(coinsViewModel, refCcy);
+        binding.setIsCoinInWatchlist(false);
+        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getActivity());
+        if (acct != null) {
+            coinsViewModel.getUserWatchlist(acct.getId()).observe(this, watchlist -> {
+                if (watchlist != null && watchlist.getUserCoinIds().contains(coinId)) {
+                    binding.setIsCoinInWatchlist(true);
+                }
+            });
+        }
+
+        binding.addToWatchlistFab.setOnClickListener(v -> {
+            if (acct != null) {
+                String userId = acct.getId();
+                // add current coin to user watchlist
+                coinsViewModel.getUserWatchlist(userId).observe(this, watchlist ->
+                        coinsViewModel.addCoinToWatchlist(userId, coinId, watchlist));
+            } else {
+                Snackbar.make(binding.detailsCoordLayout, R.string.message_sign_in,
+                        Snackbar.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void updateUiWithCoinPriceDetails(CoinsViewModel viewModel, String refCcy) {
         viewModel.getCoinById(coinId).observe(this, coin -> {
             binding.setClickHandler(view -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(coin.getUrl()))));
             ActionBar toolbar = ((AppCompatActivity) getActivity()).getSupportActionBar();
@@ -98,27 +128,6 @@ public class CoinDetailsFragment extends Fragment {
                     initShareAction(coin.getFullName() + " - " + pairs.get(0).second + " " + refCcy);
                 }
             });
-        });
-        binding.setIsCoinInWatchlist(false);
-        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getActivity());
-        if (acct != null) {
-            viewModel.getUserWatchlist(acct.getId()).observe(this, watchlist -> {
-                if (watchlist != null && watchlist.getUserCoinIds().contains(coinId)) {
-                    binding.setIsCoinInWatchlist(true);
-                }
-            });
-        }
-
-        binding.addToWatchlistFab.setOnClickListener(v -> {
-            if (acct != null) {
-                String userId = acct.getId();
-                // add current coin to user watchlist
-                viewModel.getUserWatchlist(userId).observe(this, watchlist ->
-                        viewModel.addCoinToWatchlist(userId, coinId, watchlist));
-            } else {
-                Snackbar.make(binding.detailsCoordLayout, R.string.message_sign_in,
-                        Snackbar.LENGTH_SHORT).show();
-            }
         });
     }
 
@@ -181,5 +190,20 @@ public class CoinDetailsFragment extends Fragment {
 
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        PreferenceManager.getDefaultSharedPreferences(getActivity())
+                .unregisterOnSharedPreferenceChangeListener(preferenceChangeListener);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        PreferenceManager.getDefaultSharedPreferences(getActivity())
+                .registerOnSharedPreferenceChangeListener(preferenceChangeListener);
+    }
+
 
 }
