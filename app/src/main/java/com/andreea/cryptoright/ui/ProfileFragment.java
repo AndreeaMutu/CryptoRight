@@ -6,8 +6,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,9 +27,6 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.squareup.picasso.Picasso;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class ProfileFragment extends Fragment {
 
     private static final int RC_SIGN_IN = 215;
@@ -48,9 +47,8 @@ public class ProfileFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false);
 
         binding.signInButton.setSize(SignInButton.SIZE_STANDARD);
@@ -69,7 +67,6 @@ public class ProfileFragment extends Fragment {
             binding.setIsSignedIn(false);
             binding.profileNameTv.setText("");
         });
-
     }
 
     @Override
@@ -77,11 +74,16 @@ public class ProfileFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         viewModel = ViewModelProviders.of(this).get(CoinsViewModel.class);
 
+        FragmentActivity activity = getActivity();
+        if (activity == null) {
+            return;
+        }
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
-        mGoogleSignInClient = GoogleSignIn.getClient(getActivity(), gso);
-        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getActivity());
+
+        mGoogleSignInClient = GoogleSignIn.getClient(activity, gso);
+        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(activity);
         if (acct != null) {
             updateUiForAccount(acct);
         }
@@ -104,7 +106,7 @@ public class ProfileFragment extends Fragment {
         }
     }
 
-    private void handleSignInResult (Task < GoogleSignInAccount > completedTask) {
+    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
             // Signed in successfully, show authenticated UI.
@@ -112,7 +114,7 @@ public class ProfileFragment extends Fragment {
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
-            Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
+            Log.e(TAG, "signInResult:failed code=" + e.getStatusCode());
             binding.setIsLoading(false);
         }
     }
@@ -139,7 +141,6 @@ public class ProfileFragment extends Fragment {
     }
 
     private void onClick(View v) {
-        Log.d(TAG, "onClick: ");
         switch (v.getId()) {
             case R.id.sign_in_button:
                 signIn();

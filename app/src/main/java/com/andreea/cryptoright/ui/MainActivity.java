@@ -98,8 +98,10 @@ public class MainActivity extends AppCompatActivity implements IClickCallback<Co
 
             FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(this));
             Job myJob = dispatcher.newJobBuilder()
-                    .setService(DownloadService.class) // the JobService that will be called
-                    .setTag(Constants.COINS_JOB_TAG)        // uniquely identifies the job
+                    .setService(DownloadService.class)
+                    .setTag(Constants.COINS_JOB_TAG)
+//                    .setRecurring(true)
+//                    .setTrigger(Trigger.executionWindow(0, 30))
                     .build();
 
             dispatcher.mustSchedule(myJob);

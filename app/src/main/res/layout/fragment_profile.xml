@@ -19,55 +19,61 @@
         android:layout_height="match_parent"
         tools:context=".ui.ProfileFragment">
 
-
-        <LinearLayout
+        <ScrollView
+            android:id="@+id/profile_scroll"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/profile_picture"
-                android:layout_width="@dimen/profile_picture_size"
-                android:layout_height="@dimen/profile_picture_size"
-                android:layout_gravity="center_horizontal"
-                android:adjustViewBounds="true"
-                android:scaleType="fitXY"
-                android:src="@drawable/ic_account_black_24dp"
-                android:contentDescription="@string/profile_picture_description" />
-
-            <TextView
-                android:id="@+id/profile_name_tv"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/view_margin"
-                android:textAlignment="center"
-                tools:text="FirstName LastName" />
+                android:orientation="vertical">
 
-            <com.google.android.gms.common.SignInButton
-                android:id="@+id/sign_in_button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                app:visibleGone="@{!isSignedIn}" />
+                <ImageView
+                    android:id="@+id/profile_picture"
+                    android:layout_width="@dimen/profile_picture_size"
+                    android:layout_height="@dimen/profile_picture_size"
+                    android:layout_gravity="center_horizontal"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@string/profile_picture_description"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_account_black_24dp" />
 
-            <Button
-                android:id="@+id/sign_out_button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="@string/sign_out_btn_text"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                android:textStyle="bold"
-                app:visibleGone="@{isSignedIn}" />
+                <TextView
+                    android:id="@+id/profile_name_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/view_margin"
+                    android:textAlignment="center"
+                    tools:text="FirstName LastName" />
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/watchlist_coins"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/view_margin"
-                app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-                tools:listitem="@layout/coin_item" />
-        </LinearLayout>
+                <com.google.android.gms.common.SignInButton
+                    android:id="@+id/sign_in_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    app:visibleGone="@{!isSignedIn}" />
+
+                <Button
+                    android:id="@+id/sign_out_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/sign_out_btn_text"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textStyle="bold"
+                    app:visibleGone="@{isSignedIn}" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/watchlist_coins"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/view_margin"
+                    app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                    tools:listitem="@layout/coin_item" />
+            </LinearLayout>
+
+        </ScrollView>
 
         <ProgressBar
             android:id="@+id/profile_pb"
