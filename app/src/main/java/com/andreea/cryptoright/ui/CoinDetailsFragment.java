@@ -3,6 +3,7 @@ package com.andreea.cryptoright.ui;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,10 +12,15 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.ShareActionProvider;
 import android.util.Pair;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -28,6 +34,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.andreea.cryptoright.helper.Constants.PREF_REF_CCY_SYMBOL;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link CoinDetailsFragment#newInstance} factory method to
@@ -39,6 +47,7 @@ public class CoinDetailsFragment extends Fragment {
     private FragmentCoinDetailsBinding binding;
     private CoinsDetailsRecyclerViewAdapter mAdapter;
     private List<Pair<Integer, String>> coinDetails = new ArrayList<>();
+    private ShareActionProvider mShareActionProvider;
 
     public CoinDetailsFragment() {
         // Required empty public constructor
@@ -55,6 +64,7 @@ public class CoinDetailsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         if (getArguments() != null) {
             coinId = getArguments().getString(Constants.ARG_COIN_ID);
         }
@@ -75,7 +85,7 @@ public class CoinDetailsFragment extends Fragment {
         });
 
         String refCcy = PreferenceManager.getDefaultSharedPreferences(getActivity())
-                .getString(Constants.PREF_REF_CCY_SYMBOL, getString(R.string.ccy_eur));
+                .getString(PREF_REF_CCY_SYMBOL, getString(R.string.ccy_eur));
 
         viewModel.getCoinById(coinId).observe(this, coin -> {
             binding.setClickHandler(view -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(coin.getUrl()))));
@@ -85,6 +95,7 @@ public class CoinDetailsFragment extends Fragment {
                 if (pairs != null) {
                     coinDetails.addAll(pairs);
                     mAdapter.setDetails(coinDetails);
+                    initShareAction(coin.getFullName() + " - " + pairs.get(0).second + " " + refCcy);
                 }
             });
         });
@@ -125,4 +136,50 @@ public class CoinDetailsFragment extends Fragment {
         binding.adView.loadAd(adRequest);
         return binding.getRoot();
     }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.main, menu);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String eur = getString(R.string.ccy_eur);
+        String savedCcy = sharedPreferences.getString(PREF_REF_CCY_SYMBOL, eur);
+        if (savedCcy.equals(eur)) {
+            menu.findItem(R.id.ccy_eur).setChecked(true);
+        } else {
+            menu.findItem(R.id.ccy_usd).setChecked(true);
+        }
+
+        MenuItem item = menu.findItem(R.id.menu_item_share);
+
+        mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
+    }
+
+    private void initShareAction(String text) {
+        if (mShareActionProvider != null) {
+            Intent sendIntent = new Intent();
+            sendIntent.setAction(Intent.ACTION_SEND);
+            sendIntent.putExtra(Intent.EXTRA_TEXT, text);
+            sendIntent.setType("text/plain");
+            mShareActionProvider.setShareIntent(sendIntent);
+        }
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.ccy_eur || id == R.id.ccy_usd) {
+            item.setChecked(true);
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            sharedPreferences.edit()
+                    .putString(PREF_REF_CCY_SYMBOL, String.valueOf(item.getTitle()))
+                    .apply();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
 }

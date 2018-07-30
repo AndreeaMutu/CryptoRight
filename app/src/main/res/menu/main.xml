@@ -17,4 +17,9 @@
             </group>
         </menu>
     </item>
+    <item
+        android:id="@+id/menu_item_share"
+        android:title="@string/menu_share_title"
+        app:actionProviderClass="android.support.v7.widget.ShareActionProvider"
+        app:showAsAction="ifRoom" />
 </menu>

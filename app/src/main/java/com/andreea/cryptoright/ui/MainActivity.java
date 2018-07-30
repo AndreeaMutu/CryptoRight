@@ -1,17 +1,14 @@
 package com.andreea.cryptoright.ui;
 
-import android.content.SharedPreferences;
 import android.databinding.DataBindingUtil;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 
 import com.andreea.cryptoright.R;
@@ -114,42 +111,15 @@ public class MainActivity extends AppCompatActivity implements IClickCallback<Co
     }
 
     @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String eur = getString(R.string.ccy_eur);
-        String savedCcy = sharedPreferences.getString(Constants.PREF_REF_CCY_SYMBOL, eur);
-        if (savedCcy.equals(eur)) {
-            menu.findItem(R.id.ccy_eur).setChecked(true);
-        } else {
-            menu.findItem(R.id.ccy_usd).setChecked(true);
-        }
-        return true;
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home) {
             getSupportFragmentManager().popBackStack();
             return true;
         }
-        if (id == R.id.ccy_eur || id == R.id.ccy_usd) {
-            item.setChecked(true);
-            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-            sharedPreferences.edit()
-                    .putString(Constants.PREF_REF_CCY_SYMBOL, String.valueOf(item.getTitle()))
-                    .apply();
-            return true;
-        }
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
 
     @Override
     public void onBackPressed() {
