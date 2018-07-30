@@ -5,13 +5,13 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.databinding.DataBindingUtil;
-import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -28,6 +28,8 @@ import android.view.ViewGroup;
 import com.andreea.cryptoright.R;
 import com.andreea.cryptoright.databinding.FragmentCoinDetailsBinding;
 import com.andreea.cryptoright.helper.Constants;
+import com.andreea.cryptoright.model.Coin;
+import com.andreea.cryptoright.model.CoinPrice;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -37,23 +39,17 @@ import java.util.List;
 
 import static com.andreea.cryptoright.helper.Constants.PREF_REF_CCY_SYMBOL;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link CoinDetailsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class CoinDetailsFragment extends Fragment {
 
     private static final String TAG = CoinDetailsFragment.class.getSimpleName();
     private String coinId;
     private FragmentCoinDetailsBinding binding;
     private CoinsDetailsRecyclerViewAdapter mAdapter;
-    private List<Pair<Integer, String>> coinDetails = new ArrayList<>();
     private ShareActionProvider mShareActionProvider;
     private CoinsViewModel coinsViewModel;
     private SharedPreferences.OnSharedPreferenceChangeListener preferenceChangeListener = (sharedPreferences, key) -> {
         if (key.equals(PREF_REF_CCY_SYMBOL)) {
-            Log.d(TAG, "Preferences updated: "+ sharedPreferences.getString(key, getString(R.string.ccy_eur)));
+            Log.d(TAG, "Preferences updated: " + sharedPreferences.getString(key, ""));
             updateUiWithCoinPriceDetails(coinsViewModel, sharedPreferences.getString(key, getString(R.string.ccy_eur)));
         }
     };
@@ -86,23 +82,22 @@ public class CoinDetailsFragment extends Fragment {
 
         coinsViewModel = ViewModelProviders.of(this).get(CoinsViewModel.class);
 
-        toolbar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        toolbar.setHomeButtonEnabled(true);
-        toolbar.setDisplayHomeAsUpEnabled(true);
+        FragmentActivity activity = getActivity();
+        if (activity == null) {
+            return;
+        }
+        toolbar = ((AppCompatActivity) activity).getSupportActionBar();
+        if (toolbar != null) {
+            toolbar.setHomeButtonEnabled(true);
+            toolbar.setDisplayHomeAsUpEnabled(true);
+        }
 
-        coinsViewModel.getCoinDetails(coinId).observe(this, details -> {
-            if (details != null) {
-                coinDetails.addAll(details);
-                mAdapter.setDetails(coinDetails);
-            }
-        });
-
-        String refCcy = PreferenceManager.getDefaultSharedPreferences(getActivity())
+        String refCcy = PreferenceManager.getDefaultSharedPreferences(activity)
                 .getString(PREF_REF_CCY_SYMBOL, getString(R.string.ccy_eur));
 
         updateUiWithCoinPriceDetails(coinsViewModel, refCcy);
         binding.setIsCoinInWatchlist(false);
-        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getActivity());
+        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(activity);
         if (acct != null) {
             coinsViewModel.getUserWatchlist(acct.getId()).observe(this, watchlist -> {
                 if (watchlist != null && watchlist.getUserCoinIds().contains(coinId)) {
@@ -125,24 +120,37 @@ public class CoinDetailsFragment extends Fragment {
     }
 
     private void updateUiWithCoinPriceDetails(CoinsViewModel viewModel, String refCcy) {
-        Log.d(TAG, "updateUiWithCoinPriceDetails: ref ccy"+refCcy);
-        viewModel.getCoinById(coinId).observe(this, coin -> {
-            binding.setClickHandler(view -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(coin.getUrl()))));
-            toolbar.setTitle(coin.getCoinName());
-            viewModel.getCoinPriceDetails(coin.getSymbol(), refCcy).observe(this, pairs -> {
-                if (pairs != null) {
-                    coinDetails.addAll(pairs);
-                    mAdapter.setDetails(coinDetails);
-                    initShareAction(coin.getFullName() + " - " + pairs.get(0).second + " " + refCcy);
-                }
-            });
+        viewModel.getCoinPriceDetails(coinId, refCcy).observe(this, coinWithPrice -> {
+
+            if (coinWithPrice != null) {
+                Coin coin = coinWithPrice.getCoin();
+                CoinPrice coinPrice = coinWithPrice.getCoinPrice();
+                toolbar.setTitle(coin.getCoinName());
+                initShareAction(coin.getFullName() + " - " + coinPrice.getPrice() + "\n" + coin.getUrl());
+
+                List<Pair<Integer, String>> details = new ArrayList<>();
+                details.add(new Pair<>(R.string.label_coin_name, coin.getCoinName()));
+                details.add(new Pair<>(R.string.label_coin_symbol, coin.getSymbol()));
+                details.add(new Pair<>(R.string.label_coin_algorithm, coin.getAlgorithm()));
+                details.add(new Pair<>(R.string.label_coin_proof_type, coin.getProofType()));
+                details.add(new Pair<>(R.string.label_coin_supply, coin.getTotalCoinSupply()));
+
+                details.add(new Pair<>(R.string.label_coin_price, coinPrice.getPrice()));
+                details.add(new Pair<>(R.string.label_coin_market, coinPrice.getMarket()));
+                details.add(new Pair<>(R.string.label_coin_open_day, coinPrice.getOpenday()));
+                details.add(new Pair<>(R.string.label_coin_high_day, coinPrice.getHighday()));
+                details.add(new Pair<>(R.string.label_coin_low_day, coinPrice.getLowday()));
+                details.add(new Pair<>(R.string.label_coin_daily_change, coinPrice.getChangepctday() + " %"));
+
+                mAdapter.setDetails(details);
+            }
+
         });
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_coin_details, container, false);
         mAdapter = new CoinsDetailsRecyclerViewAdapter();
         binding.detailsContainer.setAdapter(mAdapter);
@@ -168,7 +176,6 @@ public class CoinDetailsFragment extends Fragment {
         }
 
         MenuItem item = menu.findItem(R.id.menu_item_share);
-
         mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
     }
 
@@ -185,7 +192,6 @@ public class CoinDetailsFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
         if (id == R.id.ccy_eur || id == R.id.ccy_usd) {
             item.setChecked(true);
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());

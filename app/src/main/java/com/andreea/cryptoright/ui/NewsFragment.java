@@ -26,7 +26,6 @@ public class NewsFragment extends Fragment {
     public NewsFragment() {
     }
 
-    @SuppressWarnings("unused")
     public static NewsFragment newInstance(int columnCount) {
         NewsFragment fragment = new NewsFragment();
         Bundle args = new Bundle();

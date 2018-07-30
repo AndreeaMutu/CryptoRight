@@ -17,4 +17,11 @@ public class CoinPriceResponse {
     public void setPriceData(Map<String, Map<String, CoinPrice>> priceData) {
         this.priceData = priceData;
     }
+
+    @Override
+    public String toString() {
+        return "CoinPriceResponse{" +
+                "priceData=" + priceData +
+                '}';
+    }
 }
