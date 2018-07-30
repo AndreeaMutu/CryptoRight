@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -17,17 +18,20 @@ import com.squareup.picasso.RequestCreator;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class ArticleRecyclerViewAdapter extends RecyclerView.Adapter<ArticleRecyclerViewAdapter.ArticleViewHolder> {
 
     private List<NewsArticle> articles = new ArrayList<>();
 
+    @NonNull
     @Override
-    public ArticleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ArticleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         ArticleItemBinding binding = DataBindingUtil
                 .inflate(LayoutInflater.from(parent.getContext()), R.layout.article_item,
                         parent, false);
@@ -35,9 +39,8 @@ public class ArticleRecyclerViewAdapter extends RecyclerView.Adapter<ArticleRecy
     }
 
     @Override
-    public void onBindViewHolder(final ArticleViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ArticleViewHolder holder, int position) {
         NewsArticle article = articles.get(position);
-
         holder.binding.setArticle(article);
         String imageUrl = article.getImageurl();
         Picasso picasso = Picasso.get();
@@ -51,7 +54,11 @@ public class ArticleRecyclerViewAdapter extends RecyclerView.Adapter<ArticleRecy
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             Instant instant = Instant.ofEpochSecond(article.getPublishedOn());
-            holder.binding.articleDate.setText(LocalDateTime.ofInstant(instant, ZoneOffset.UTC).format(DateTimeFormatter.ISO_LOCAL_TIME));
+            DateTimeFormatter formatter =
+                    DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)
+                            .withLocale(Locale.getDefault())
+                            .withZone(ZoneId.systemDefault());
+            holder.binding.articleDate.setText(LocalDateTime.ofInstant(instant, ZoneId.systemDefault()).format(formatter));
         }
         holder.binding.getRoot().setOnClickListener(v -> {
             Context context = holder.binding.getRoot().getContext();
