@@ -30,7 +30,7 @@
             </intent-filter>
         </service>
 
-        <receiver android:name=".CryptoWidget">
+        <receiver android:name=".widget.CryptoWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -40,7 +40,7 @@
                 android:resource="@xml/crypto_widget_info" />
         </receiver>
 
-        <activity android:name=".CryptoWidgetConfigureActivity">
+        <activity android:name=".widget.CryptoWidgetConfigureActivity">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>

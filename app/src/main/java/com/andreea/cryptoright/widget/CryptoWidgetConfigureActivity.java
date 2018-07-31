@@ -1,4 +1,4 @@
-package com.andreea.cryptoright;
+package com.andreea.cryptoright.widget;
 
 import android.app.Activity;
 import android.appwidget.AppWidgetManager;
@@ -9,12 +9,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
+import com.andreea.cryptoright.R;
+
 /**
  * The configuration screen for the {@link CryptoWidget CryptoWidget} AppWidget.
  */
 public class CryptoWidgetConfigureActivity extends Activity {
 
-    private static final String PREFS_NAME = "com.andreea.cryptoright.CryptoWidget";
+    private static final String PREFS_NAME = "com.andreea.cryptoright.widget.CryptoWidget";
     private static final String PREF_PREFIX_KEY = "appwidget_";
     int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
     EditText mAppWidgetText;

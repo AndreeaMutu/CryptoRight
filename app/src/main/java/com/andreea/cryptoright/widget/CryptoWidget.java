@@ -1,4 +1,4 @@
-package com.andreea.cryptoright;
+package com.andreea.cryptoright.widget;
 
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.RemoteViews;
 
+import com.andreea.cryptoright.R;
 import com.andreea.cryptoright.helper.Constants;
 import com.andreea.cryptoright.model.CoinPrice;
 import com.andreea.cryptoright.model.CoinPriceResponse;
