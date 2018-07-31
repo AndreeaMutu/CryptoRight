@@ -4,6 +4,7 @@
     <string name="title_news">News</string>
     <string name="title_profile">Profile</string>
     <string name="coin_thumbnail_description">Coin logo</string>
+
     <string name="label_coin_name">Name</string>
     <string name="label_coin_symbol">Symbol</string>
     <string name="label_coin_algorithm">Algorithm</string>
@@ -16,20 +17,25 @@
     <string name="label_coin_high_day">High Day</string>
     <string name="label_coin_low_day">Low Day</string>
     <string name="label_coin_daily_change">Daily change</string>
-    <string name="example_widget_coin">BTC</string>
-    <string name="configure">Configure</string>
-    <string name="add_widget">Add widget</string>
-    <string name="menu_settings">Settings</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="menu_settings">Settings</string>
     <string name="ccy_eur">EUR</string>
     <string name="ccy_usd">USD</string>
     <string name="menu_ref_ccy">Reference currency</string>
+    <string name="menu_share_title">Share</string>
+
     <string name="message_sign_in">You need to sign in before using watchlist</string>
     <string name="sign_out_btn_text">Sign out</string>
+
     <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+
     <string name="article_image_description">Article thumbnail image</string>
     <string name="profile_picture_description">Profile picture</string>
-    <string name="menu_share_title">Share</string>
+
+    <string name="coin_widget_price_desc">Price</string>
+    <string name="coin_widget_change_desc">Daily change percent</string>
+    <string name="coin_widget_symbol_desc">Symbol</string>
+    <string name="configure">Configure</string>
+    <string name="add_widget">Add widget</string>
 </resources>

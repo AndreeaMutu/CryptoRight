@@ -3,4 +3,6 @@
     <color name="colorPrimary">#26a69a</color>
     <color name="colorPrimaryDark">#00766c</color>
     <color name="colorAccent">#64d8cb</color>
+
+    <color name="widget_text_color">#ffffff</color>
 </resources>
