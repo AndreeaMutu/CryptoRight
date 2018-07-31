@@ -25,7 +25,7 @@
     <string name="menu_ref_ccy">Reference currency</string>
     <string name="menu_share_title">Share</string>
 
-    <string name="message_sign_in">You need to sign in before using watchlist</string>
+    <string name="message_sign_in">You need to sign in before using watchlist. Go to Profile and sign in.</string>
     <string name="sign_out_btn_text">Sign out</string>
 
     <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
@@ -36,6 +36,7 @@
     <string name="coin_widget_price_desc">Price</string>
     <string name="coin_widget_change_desc">Daily change percent</string>
     <string name="coin_widget_symbol_desc">Symbol</string>
+    <string name="coin_widget_default_coin_symbol">BTC</string>
     <string name="configure">Configure</string>
     <string name="add_widget">Add widget</string>
 </resources>

@@ -43,25 +43,27 @@ public class CryptoWidget extends AppWidgetProvider {
         coinPriceResponseCall.enqueue(new Callback<CoinPriceResponse>() {
             @Override
             public void onResponse(@NonNull Call<CoinPriceResponse> call, @NonNull Response<CoinPriceResponse> response) {
-                if (response.isSuccessful()){
+                if (response.isSuccessful()) {
                     CoinPriceResponse body = response.body();
-                    Map<String, Map<String, CoinPrice>> priceData = body.getPriceData();
-                    Log.d(TAG, "onResponse price data: " + priceData);
-                    CoinPrice coinPrice = priceData.get(coinSymbol).get("USD");
+                    if (body != null) {
+                        Map<String, Map<String, CoinPrice>> priceData = body.getPriceData();
+                        Log.d(TAG, "onResponse price data: " + priceData);
+                        CoinPrice coinPrice = priceData.get(coinSymbol).get("USD");
 
-                    // Construct the RemoteViews object
-                    RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.crypto_widget);
-                    views.setTextViewText(R.id.coin_symbol_tv, coinSymbol);
-                    views.setTextViewText(R.id.price_tv, coinPrice.getPrice());
-                    views.setTextViewText(R.id.change_percent_tv, coinPrice.getChange24Hour());
+                        // Construct the RemoteViews object
+                        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.crypto_widget);
+                        views.setTextViewText(R.id.coin_symbol_tv, coinSymbol);
+                        views.setTextViewText(R.id.price_tv, coinPrice.getPrice());
+                        views.setTextViewText(R.id.change_percent_tv, coinPrice.getChangepctday() + " %");
 
-                    // Instruct the widget manager to update the widget
-                    appWidgetManager.updateAppWidget(appWidgetId, views);
+                        // Instruct the widget manager to update the widget
+                        appWidgetManager.updateAppWidget(appWidgetId, views);
+                    }
                 }
             }
 
             @Override
-            public void onFailure(Call<CoinPriceResponse> call, Throwable t) {
+            public void onFailure(@NonNull Call<CoinPriceResponse> call, @NonNull Throwable t) {
                 Log.e(TAG, "Call to price data failed", t);
             }
         });

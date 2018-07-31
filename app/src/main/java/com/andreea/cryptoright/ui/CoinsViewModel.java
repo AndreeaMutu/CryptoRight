@@ -5,6 +5,7 @@ import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Transformations;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -113,7 +114,7 @@ public class CoinsViewModel extends AndroidViewModel {
         }
         updated.setUserId(userId);
         updated.addCoin(coinId);
-        new Thread(() -> watchlistDao.insert(updated)).start();
+        new InsertTask(watchlistDao).execute(updated);
     }
 
     public LiveData<List<Coin>> getWatchlistCoins(String userId) {
@@ -123,5 +124,24 @@ public class CoinsViewModel extends AndroidViewModel {
                         return coinDao.getCoinsByIds(input.getUserCoinIds());
                     } else return new MutableLiveData<>();
                 });
+    }
+
+    private static class InsertTask extends AsyncTask<Watchlist, Void, Void> {
+        private final WatchlistDao dao;
+
+        private InsertTask(WatchlistDao dao) {
+            this.dao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(Watchlist... input) {
+            Watchlist watchlist = input[0];
+            if (watchlist != null) {
+                dao.insert(watchlist);
+            } else {
+                Log.e(TAG, "Can not insert null watchlist.");
+            }
+            return null;
+        }
     }
 }

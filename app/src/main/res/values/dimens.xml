@@ -23,5 +23,6 @@
     <dimen name="widget_text_size">24sp</dimen>
     <dimen name="widget_text_margin">8dp</dimen>
     <dimen name="widget_min_dim">40dp</dimen>
+    <dimen name="view_margin_horiz">4dp</dimen>
 
 </resources>

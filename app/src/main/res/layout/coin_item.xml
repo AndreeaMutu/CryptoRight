@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -17,7 +17,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/card_vertical_margin"
+        android:layout_marginEnd="@dimen/view_margin_horiz"
+        android:layout_marginStart="@dimen/view_margin_horiz"
         android:layout_marginTop="@dimen/card_horizontal_margin"
+        app:cardCornerRadius="@dimen/card_corner_radius"
         android:onClick="@{() ->  callback.onClick(coin)}"
         android:orientation="horizontal">
 
@@ -40,8 +43,8 @@
                 android:id="@+id/content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/view_margin"
                 android:layout_gravity="center_vertical"
+                android:layout_margin="@dimen/view_margin"
                 android:text="@{coin.coinName}"
                 android:textAppearance="?attr/textAppearanceListItem"
                 tools:text="Bitcoin" />

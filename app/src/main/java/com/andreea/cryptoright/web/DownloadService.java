@@ -1,7 +1,6 @@
 package com.andreea.cryptoright.web;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -42,7 +41,25 @@ public class DownloadService extends JobService {
                 Log.d(TAG, "Response coins web service." + response);
                 if (response.isSuccessful()) {
                     CoinListResponse responseBody = response.body();
-                    new BulkInsertTask(db).execute(responseBody);
+                    new Thread(() -> {
+                        if (responseBody != null) {
+                            String baseImageUrl = responseBody.getBaseImageUrl();
+                            String baseLinkUrl = responseBody.getBaseLinkUrl();
+                            final Map<String, Coin> data = responseBody.getData();
+                            Collection<Coin> values = data.values();
+
+                            // update urls with base url
+                            for (Coin coin : values) {
+                                String imageUrl = coin.getImageUrl();
+                                String url = coin.getUrl();
+                                coin.setImageUrl(baseImageUrl + imageUrl);
+                                coin.setUrl(baseLinkUrl + url);
+                            }
+                            db.coinDao().insertAll(values);
+                        } else {
+                            Log.e(TAG, "Coin list response is null. Nothing to insert in db.");
+                        }
+                    }).start();
                 }
                 jobFinished(job, false);
             }
@@ -59,37 +76,5 @@ public class DownloadService extends JobService {
     @Override
     public boolean onStopJob(JobParameters job) {
         return false;
-    }
-
-    private static class BulkInsertTask extends AsyncTask<CoinListResponse, Void, Void> {
-        private final CoinRoomDatabase db;
-
-        private BulkInsertTask(CoinRoomDatabase db) {
-            this.db = db;
-        }
-
-        @Override
-        protected Void doInBackground(CoinListResponse... input) {
-            CoinListResponse responseBody = input[0];
-            if (responseBody != null) {
-                String baseImageUrl = responseBody.getBaseImageUrl();
-                String baseLinkUrl = responseBody.getBaseLinkUrl();
-                final Map<String, Coin> data = responseBody.getData();
-                Collection<Coin> values = data.values();
-
-                // update urls with base url
-                for (Coin coin : values) {
-                    String imageUrl = coin.getImageUrl();
-                    String url = coin.getUrl();
-                    coin.setImageUrl(baseImageUrl + imageUrl);
-                    coin.setUrl(baseLinkUrl + url);
-                }
-                db.coinDao().insertAll(values);
-            } else {
-                Log.e(TAG, "Coin list response is null. Nothing to insert in db.");
-            }
-
-            return null;
-        }
     }
 }
