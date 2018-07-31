@@ -29,7 +29,7 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/view_margin"
             android:layout_marginRight="@dimen/view_margin"
-            app:layoutManager="LinearLayoutManager"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
             tools:context=".ui.NewsFragment"
             tools:listitem="@layout/article_item" />
     </FrameLayout>

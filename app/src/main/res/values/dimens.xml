@@ -8,8 +8,8 @@
 
     <dimen name="widget_margin">8dp</dimen>
 
-    <dimen name="card_vertical_margin">4dp</dimen>
-    <dimen name="card_horizontal_margin">4dp</dimen>
+    <dimen name="card_vertical_margin">8dp</dimen>
+    <dimen name="card_horizontal_margin">8dp</dimen>
     <dimen name="card_corner_radius">8dp</dimen>
     <dimen name="card_elevation">4dp</dimen>
     <dimen name="article_image_height">120dp</dimen>
@@ -17,5 +17,8 @@
     <dimen name="widget_config_padding">16dp</dimen>
     <dimen name="widget_config_margin">8dp</dimen>
     <dimen name="profile_picture_size">100dp</dimen>
+    <dimen name="app_bar_elevation">4dp</dimen>
+    <dimen name="fab_elevation">6dp</dimen>
+    <dimen name="view_padding">4dp</dimen>
 
 </resources>
