@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements IClickCallback<Co
         binding.navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         if (savedInstanceState == null) {
             Fragment coinsFragment = CoinsFragment.newInstance(1);
-            Fragment newsFragment = NewsFragment.newInstance(2);
+            Fragment newsFragment = NewsFragment.newInstance();
             Fragment profileFragment = ProfileFragment.newInstance();
             fm.beginTransaction().add(R.id.fragment_container, profileFragment, getString(R.string.title_profile)).hide(profileFragment).commit();
             fm.beginTransaction().add(R.id.fragment_container, newsFragment, getString(R.string.title_news)).hide(newsFragment).commit();
@@ -148,6 +148,5 @@ public class MainActivity extends AppCompatActivity implements IClickCallback<Co
                 .replace(R.id.fragment_container, detailsFragment)
                 .addToBackStack(null)
                 .commit();
-        //activeFragmentTag = getString(R.string.title_coins);
     }
 }
