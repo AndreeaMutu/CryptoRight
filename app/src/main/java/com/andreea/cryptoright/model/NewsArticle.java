@@ -14,7 +14,6 @@ public class NewsArticle {
 
     @SerializedName("published_on")
     @Expose
-    // TODO: 7/19/18 parse with  Instant instant = Instant.ofEpochSecond(1531996260);
     private Long publishedOn;
 
     @SerializedName("imageurl")

@@ -56,6 +56,7 @@ public class CoinsRecyclerViewAdapter extends RecyclerView.Adapter<CoinsRecycler
         return mValues == null ? 0 : mValues.size();
     }
 
+    /* Adapted from https://github.com/googlesamples/android-architecture-components/blob/master/BasicSample/app/src/main/java/com/example/android/persistence/ui/ProductAdapter.java*/
     public void setCoinList(List<Coin> coinList) {
         if (mValues == null) {
             mValues = coinList;
