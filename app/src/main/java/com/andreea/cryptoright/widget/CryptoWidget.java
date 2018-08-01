@@ -33,13 +33,15 @@ public class CryptoWidget extends AppWidgetProvider {
                                 int appWidgetId) {
 
         String coinSymbol = CryptoWidgetConfigureActivity.loadSymbolPref(context, appWidgetId);
+        String refCcy = CryptoWidgetConfigureActivity.loadCcyPref(context, appWidgetId);
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(Constants.COIN_API_BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        Log.d(TAG, "updateAppWidget: ");
         CryptoCompareService service = retrofit.create(CryptoCompareService.class);
-        Call<CoinPriceResponse> coinPriceResponseCall = service.getCoinPrices(coinSymbol, "USD");
+        Call<CoinPriceResponse> coinPriceResponseCall = service.getCoinPrices(coinSymbol, refCcy);
+
         coinPriceResponseCall.enqueue(new Callback<CoinPriceResponse>() {
             @Override
             public void onResponse(@NonNull Call<CoinPriceResponse> call, @NonNull Response<CoinPriceResponse> response) {
@@ -48,7 +50,7 @@ public class CryptoWidget extends AppWidgetProvider {
                     if (body != null) {
                         Map<String, Map<String, CoinPrice>> priceData = body.getPriceData();
                         Log.d(TAG, "onResponse price data: " + priceData);
-                        CoinPrice coinPrice = priceData.get(coinSymbol).get("USD");
+                        CoinPrice coinPrice = priceData.get(coinSymbol).get(refCcy);
 
                         // Construct the RemoteViews object
                         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.crypto_widget);
@@ -82,7 +84,8 @@ public class CryptoWidget extends AppWidgetProvider {
     public void onDeleted(Context context, int[] appWidgetIds) {
         // When the user deletes the widget, delete the preference associated with it.
         for (int appWidgetId : appWidgetIds) {
-            CryptoWidgetConfigureActivity.deleteTitlePref(context, appWidgetId);
+            CryptoWidgetConfigureActivity.deleteSymbolPref(context, appWidgetId);
+            CryptoWidgetConfigureActivity.deleteCcyPref(context, appWidgetId);
         }
     }
 

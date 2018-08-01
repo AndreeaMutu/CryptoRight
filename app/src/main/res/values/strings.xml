@@ -37,6 +37,6 @@
     <string name="coin_widget_change_desc">Daily change percent</string>
     <string name="coin_widget_symbol_desc">Symbol</string>
     <string name="coin_widget_default_coin_symbol">BTC</string>
-    <string name="configure">Configure</string>
+    <string name="configure">Select a coin from the watchlist and the reference currency:</string>
     <string name="add_widget">Add widget</string>
 </resources>

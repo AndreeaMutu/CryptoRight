@@ -11,17 +11,32 @@
         android:layout_marginBottom="@dimen/widget_config_margin"
         android:text="@string/configure" />
 
-    <EditText
-        android:id="@+id/coin_symbol_et"
+    <Spinner
+        android:id="@+id/spinner_ccy"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="text" />
+        android:layout_marginTop="@dimen/view_margin"
+        android:entries="@array/ccy_array" />
+
+    <Spinner
+        android:id="@+id/spinner_coins"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_margin" />
+
+    <!--    <EditText
+            android:id="@+id/coin_symbol_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text" />-->
 
     <Button
         android:id="@+id/add_button"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/widget_config_margin"
-        android:text="@string/add_widget" />
+        android:backgroundTint="@color/colorPrimaryDark"
+        android:text="@string/add_widget"
+        android:textColor="@color/widget_text_color" />
 
 </LinearLayout>
