@@ -39,4 +39,7 @@
     <string name="coin_widget_default_coin_symbol">BTC</string>
     <string name="configure">Select a coin from the watchlist and the reference currency:</string>
     <string name="add_widget">Add widget</string>
+    <string name="widget_select_coin_msg">Please pick a coin</string>
+    <string name="widget_select_ccy_msg">Please pick a currency</string>
+    <string name="show_more">More details</string>
 </resources>

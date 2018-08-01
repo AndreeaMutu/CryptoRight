@@ -40,14 +40,14 @@ public class CryptoWidgetConfigureActivity extends AppCompatActivity {
             // When the button is clicked, store the string locally
             String coinSymbol = String.valueOf(coinSpinner.getSelectedItem());
             if (TextUtils.isEmpty(coinSymbol)) {
-                Toast.makeText(CryptoWidgetConfigureActivity.this, "Please pick a coin", Toast.LENGTH_LONG).show();
+                Toast.makeText(CryptoWidgetConfigureActivity.this, R.string.widget_select_coin_msg, Toast.LENGTH_LONG).show();
                 return;
             }
             saveSymbolPref(context, mAppWidgetId, coinSymbol);
 
             String ccy = String.valueOf(ccySpinner.getSelectedItem());
             if (TextUtils.isEmpty(ccy)) {
-                Toast.makeText(CryptoWidgetConfigureActivity.this, "Please pick a currency", Toast.LENGTH_LONG).show();
+                Toast.makeText(CryptoWidgetConfigureActivity.this, R.string.widget_select_ccy_msg, Toast.LENGTH_LONG).show();
                 return;
             }
             saveCcyPref(context, mAppWidgetId, ccy);

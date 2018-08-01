@@ -141,6 +141,7 @@ public class CoinDetailsFragment extends Fragment {
                 details.add(new Pair<>(R.string.label_coin_high_day, coinPrice.getHighday()));
                 details.add(new Pair<>(R.string.label_coin_low_day, coinPrice.getLowday()));
                 details.add(new Pair<>(R.string.label_coin_daily_change, coinPrice.getChangepctday() + " %"));
+                details.add(new Pair<>(R.string.show_more, coin.getUrl()));
 
                 mAdapter.setDetails(details);
             }

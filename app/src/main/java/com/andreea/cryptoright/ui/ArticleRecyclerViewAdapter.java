@@ -16,6 +16,8 @@ import com.andreea.cryptoright.model.NewsArticle;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestCreator;
 
+import org.joda.time.format.DateTimeFormat;
+
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -52,14 +54,21 @@ public class ArticleRecyclerViewAdapter extends RecyclerView.Adapter<ArticleRecy
         }
         loadRequest.placeholder(android.R.drawable.stat_notify_error).into(holder.binding.articleImage);
 
+        String date = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             Instant instant = Instant.ofEpochSecond(article.getPublishedOn());
             DateTimeFormatter formatter =
                     DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)
                             .withLocale(Locale.getDefault())
                             .withZone(ZoneId.systemDefault());
-            holder.binding.articleDate.setText(LocalDateTime.ofInstant(instant, ZoneId.systemDefault()).format(formatter));
+            date = LocalDateTime.ofInstant(instant, ZoneId.systemDefault()).format(formatter);
+
+        } else {
+            org.joda.time.Instant instant = org.joda.time.Instant.ofEpochSecond(article.getPublishedOn());
+            org.joda.time.format.DateTimeFormatter formatter = DateTimeFormat.forPattern("dd.MM.yyyy HH:mm");
+            date = formatter.print(instant);
         }
+        holder.binding.articleDate.setText(date);
         holder.binding.getRoot().setOnClickListener(v -> {
             Context context = holder.binding.getRoot().getContext();
             context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(article.getUrl())));

@@ -39,6 +39,7 @@
                 android:id="@+id/value_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:autoLink="web"
                 android:padding="@dimen/view_padding"
                 android:text="@{value}"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
