@@ -36,7 +36,4 @@ public class Watchlist {
         this.userCoinIds = userCoinIds;
     }
 
-    public void addCoin(String coinId) {
-        userCoinIds.add(coinId);
-    }
 }

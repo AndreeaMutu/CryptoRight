@@ -20,8 +20,11 @@ import com.andreea.cryptoright.model.CoinWithPrice;
 import com.andreea.cryptoright.model.Watchlist;
 import com.andreea.cryptoright.web.CryptoCompareService;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -113,7 +116,9 @@ public class CoinsViewModel extends AndroidViewModel {
             updated = existing;
         }
         updated.setUserId(userId);
-        updated.addCoin(coinId);
+        Set<String> coinIds = new HashSet<>(updated.getUserCoinIds());
+        coinIds.add(coinId);
+        updated.setUserCoinIds(new ArrayList<>(coinIds));
         new InsertTask(watchlistDao).execute(updated);
     }
 
@@ -121,6 +126,7 @@ public class CoinsViewModel extends AndroidViewModel {
         return Transformations.switchMap(watchlistDao.getUserWatchlist(userId),
                 input -> {
                     if (input != null) {
+                        Log.d(TAG, "getWatchlistCoins: ids " + input.getUserCoinIds());
                         return coinDao.getCoinsByIds(input.getUserCoinIds());
                     } else return new MutableLiveData<>();
                 });
