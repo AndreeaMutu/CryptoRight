@@ -69,6 +69,8 @@ public class ProfileFragment extends Fragment {
             binding.setIsSignedIn(false);
             binding.profileNameTv.setText("");
             mAdapter.setCoinList(Collections.emptyList());
+            Picasso.get().load(R.drawable.ic_account_black_24dp).placeholder(R.drawable.ic_account_black_24dp)
+                    .into(binding.profilePicture);
         });
     }
 
