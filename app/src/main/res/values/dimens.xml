@@ -25,4 +25,6 @@
     <dimen name="widget_min_dim">40dp</dimen>
     <dimen name="view_margin_horiz">4dp</dimen>
 
+    <dimen name="coins_fragment_columns">2</dimen>
+
 </resources>
