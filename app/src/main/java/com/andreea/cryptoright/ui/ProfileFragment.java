@@ -27,6 +27,8 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.squareup.picasso.Picasso;
 
+import java.util.Collections;
+
 public class ProfileFragment extends Fragment {
 
     private static final int RC_SIGN_IN = 215;
@@ -66,6 +68,7 @@ public class ProfileFragment extends Fragment {
             binding.setIsLoading(false);
             binding.setIsSignedIn(false);
             binding.profileNameTv.setText("");
+            mAdapter.setCoinList(Collections.emptyList());
         });
     }
 

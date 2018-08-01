@@ -4,7 +4,7 @@
     android:initialKeyguardLayout="@layout/crypto_widget"
     android:initialLayout="@layout/crypto_widget"
     android:minHeight="@dimen/widget_min_dim"
-    android:minWidth="@dimen/widget_min_dim"
+    android:minWidth="@dimen/widget_min_dim_horiz"
     android:previewImage="@drawable/ic_coin_black_24dp"
     android:resizeMode="horizontal|vertical"
     android:updatePeriodMillis="60000"

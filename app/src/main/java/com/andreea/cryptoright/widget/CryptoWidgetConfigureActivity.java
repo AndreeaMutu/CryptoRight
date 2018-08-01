@@ -50,6 +50,7 @@ public class CryptoWidgetConfigureActivity extends AppCompatActivity {
                 Toast.makeText(CryptoWidgetConfigureActivity.this, "Please pick a currency", Toast.LENGTH_LONG).show();
                 return;
             }
+            saveCcyPref(context, mAppWidgetId, ccy);
 
             // It is the responsibility of the configuration activity to update the app widget
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
@@ -132,7 +133,7 @@ public class CryptoWidgetConfigureActivity extends AppCompatActivity {
                     String symbol = coin.getSymbol();
                     list.add(symbol);
                 }
-                items = (String[]) list.toArray();
+                items = list.toArray(new String[0]);
             } else {
                 items = new String[]{getString(R.string.coin_widget_default_coin_symbol)};
             }
